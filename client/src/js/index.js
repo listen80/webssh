@@ -31,7 +31,11 @@ term.fit()
 var upload = document.getElementById('upload')
 var download = document.getElementById('download')
 
+var isUploading = false
 upload.onclick = function(argument) {
+    if(isUploading) {
+        return
+    }
     var input = document.createElement('input')
     input.type = 'file'
     input.onchange = function() {
@@ -52,20 +56,18 @@ function postfile(file) {
     var ot = new Date().getTime();
     var oloaded = 0
     xhr.upload.onprogress = function(evt) {
-        document.getElementById("time").style.display = 'inline-block'
         if (evt.lengthComputable) { //
-            time.innerHTML = Math.round(evt.loaded / evt.total * 100) + "%"
+            upload.innerHTML = Math.round(evt.loaded / evt.total * 100) + "%"
         }
     }
     xhr.onload = function(e) {
-        document.getElementById("time").style.display = 'inline-block'
-        document.getElementById("time").innerHTML = (xhr.responseText)
+        upload.innerHTML = 'Upload'
         term.focus()
-        setTimeout(function(argument) {
-            document.getElementById("time").style.display = 'none'
-        }, 1000)
+        isUploading = true
     }
-
+    xhr.onerror = function(e) {
+        isUploading = true
+    }
     xhr.send(formData);
     term.focus()
 }

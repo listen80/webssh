@@ -89,16 +89,17 @@ a:focus {
 ol {
     position: absolute;
     margin: 0;
-    padding: 0;
+    padding-left: 10px;
     white-space: nowrap;
     list-style: none;
-    top: 22px;
+    top: 36px;
     left: 0px;
-    padding: 0 0 0 10px;
     background: #57a2ff;
     color: white;
     display: none;
+    text-align: left;
     max-width: 157px;
+    border-radius: 5px;
 }
 
 li {

@@ -52,6 +52,7 @@ function postfile(file) {
     var ot = new Date().getTime();
     var oloaded = 0
     xhr.upload.onprogress = function(evt) {
+        document.getElementById("time").style.display = 'inline-block'
         console.log(this, evt)
         // event.total是需要传输的总字节，event.loaded是已经传输的字节。如果event.lengthComputable不为真，则event.total等于0
         var html = ''

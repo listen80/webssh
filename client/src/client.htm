@@ -1,55 +1,71 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>WebSSH2</title>
-  <style>
-    html, body {background-color: #000;height: 100%;margin: 0;}.dropup-content {display: none;}
-    a {
-      text-decoration: none;
-    }
-    ol {
-      position: absolute;
-      margin: 0;
-      padding: 0;
-      white-space: nowrap;
-      list-style: none;
-      top: 22px;
-      left: 0px;
-      padding: 0 0 0 10px;
-      background: #57a2ff;
-      color: white;
-      display: none;
-      max-width: 157px;
-    }
-    li {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    li > a{
-      color: white;
-    }
-  </style>
-  <link rel="stylesheet" href="/webssh2.css" />
+	<title>WebSSH2</title>
+	<style>
+	html,
+	body {
+		background-color: #000;
+		height: 100%;
+		margin: 0;
+	}
+
+	.dropup-content {
+		display: none;
+	}
+
+	a {
+		text-decoration: none;
+	}
+	a:active, a:visited, a:focus {
+		color: white;
+	}
+
+	ol {
+		position: absolute;
+		margin: 0;
+		padding: 0;
+		white-space: nowrap;
+		list-style: none;
+		top: 22px;
+		left: 0px;
+		padding: 0 0 0 10px;
+		background: #57a2ff;
+		color: white;
+		display: none;
+		max-width: 157px;
+	}
+
+	li {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	</style>
+	<link rel="stylesheet" href="/webssh2.css" />
 </head>
+
 <body>
-  <div class="box">
-    <div id="header"></div>
-    <div id="terminal-container" class="terminal"></div>
-    <div id="bottomdiv">
-      <div class="dropup" id="menu">
-        <i class="fas fa-bars fa-fw"></i> Menu
-        <div id="dropupContent" class="dropup-content"></div>
-      </div>
-      <div id="footer"></div>
-    </div>
-    <div id="status" style="position: fixed;right: 20px; top: 0px;"></div>
-    <div style='position: fixed;right: 20px; top: 20px;background-color: green;padding: 0 10px;z-index: 99999;display: none;' id='wrap'>
-      <a href="javascript:;" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px" id="upload">Upload</a>
-      <a href="javascript:;" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px;position: relative;" id="download">Download<ol id="ol"></ol></a>
-      <a href="" target="_blank" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px">New</a>
-    </div>
-    <div id='time' style="right: 20px;position: fixed; background: #57a2ff;display: block;padding: 0 10px;display: none;top: 41px;"></div>
-  </div>
-<script src="/webssh2.bundle.js" defer></script>
+	<div class="box">
+		<div id="header"></div>
+		<div id="terminal-container" class="terminal"></div>
+		<div id="bottomdiv">
+			<div class="dropup" id="menu">
+				<i class="fas fa-bars fa-fw"></i> Menu
+				<div id="dropupContent" class="dropup-content"></div>
+			</div>
+			<div id="footer"></div>
+		</div>
+		<div id="status" style="position: fixed;right: 20px; top: 0px;"></div>
+		<div style='position: fixed;right: 20px; top: 20px;background-color: green;padding: 0 10px;z-index: 99999;display: none;' id='wrap'>
+			<a href="javascript:;" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px" id="upload">Upload</a>
+			<a href="javascript:;" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px;position: relative;" id="download">Download<ol id="ol"></ol></a>
+			<a href="" target="_blank" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px">New</a>
+		</div>
+		<div id='time' style="right: 20px;position: fixed; background: #57a2ff;display: block;padding: 0 10px;display: none;top: 41px;"></div>
+	</div>
+	<script src="/webssh2.bundle.js" defer></script>
 </body>
+
 </html>

@@ -3,16 +3,6 @@
 import * as io from 'socket.io-client'
 import * as Terminal from 'xterm/dist/xterm'
 import * as fit from 'xterm/dist/addons/fit/fit'
-// fontawesome, individual icon imports reduces file size dramatically but it's
-// a little messy. this should be fixed by some updates with the fa library at some point
-// import fontawesome from '@fortawesome/fontawesome'
-// import faBars from '@fortawesome/fontawesome-free-solid/faBars'
-// // import faQuestion from '@fortawesome/fontawesome-free-solid/faQuestion'
-// import faClipboard from '@fortawesome/fontawesome-free-solid/faClipboard'
-// import faDownload from '@fortawesome/fontawesome-free-solid/faDownload'
-// import faKey from '@fortawesome/fontawesome-free-solid/faKey'
-// import faCog from '@fortawesome/fontawesome-free-solid/faCog'
-// fontawesome.library.add(faBars, faClipboard, faDownload, faKey, faCog)
 
 require('xterm/dist/xterm.css')
 require('../css/style.css')
@@ -51,7 +41,7 @@ upload.onclick = function(argument) {
 }
 
 function postfile(file) {
-    console.log(file)
+    // console.log(file)
     if (!file || !file.type) {
         return
     }
@@ -63,42 +53,12 @@ function postfile(file) {
     var oloaded = 0
     xhr.upload.onprogress = function(evt) {
         console.log(this, evt)
-        // var progressBar = document.getElementById("progressBar");
-        // var percentageDiv = document.getElementById("percentage");
         // event.total是需要传输的总字节，event.loaded是已经传输的字节。如果event.lengthComputable不为真，则event.total等于0
-        // var html = ''
-        // if (evt.lengthComputable) { //
-        //     // progressBar.max = evt.total;
-        //     // progressBar.value = evt.loaded;
-        //     html += ( Math.round(evt.loaded / evt.total * 100) + "%");
-        // }
-
-        // var time = document.getElementById("time");
-        // var nt = new Date().getTime(); //获取当前时间
-        // var pertime = (nt - ot) / 1000; //计算出上次调用该方法时到现在的时间差，单位为s
-        // ot = new Date().getTime(); //重新赋值时间，用于下次计算
-
-        // var perload = evt.loaded - oloaded; //计算该分段上传的文件大小，单位b       
-        // oloaded = evt.loaded; //重新赋值已上传文件大小，用以下次计算
-
-        // //上传速度计算
-        // var speed = perload / pertime; //单位b/s
-        // var bspeed = speed;
-        // var units = 'b/s'; //单位名称
-        // if (speed / 1024 > 1) {
-        //     speed = speed / 1024;
-        //     units = 'k/s';
-        // }
-        // if (speed / 1024 > 1) {
-        //     speed = speed / 1024;
-        //     units = 'M/s';
-        // }
-        // speed = speed.toFixed(1);
-        // //剩余时间
-        // var resttime = ((evt.total - evt.loaded) / bspeed).toFixed(1);
-        // time.innerHTML = html + '，速度：' + speed + units + '，剩余时间：' + resttime + 's';
-        // if (bspeed == 0)
-        //     time.innerHTML = '上传已取消';
+        var html = ''
+        if (evt.lengthComputable) { //
+            html += ( Math.round(evt.loaded / evt.total * 100) + "%");
+        }
+        time.innerHTML = html
     }
     xhr.onload = function(e) {
         document.getElementById("time").style.display = 'inline-block'
@@ -106,7 +66,7 @@ function postfile(file) {
         term.focus()
         setTimeout(function(argument) {
             document.getElementById("time").style.display = 'none'
-        }, 1500)
+        }, 1000)
     };
 
     xhr.send(formData);
@@ -208,8 +168,7 @@ socket.on('header', function(data) {
     if (data) {
         header.innerHTML = data
         header.style.display = 'block'
-        // header is 19px and footer is 19px, recaculate new terminal-container and resize
-        terminalContainer.style.height = 'calc(100% - 38px)'
+        // terminalContainer.style.height = 'calc(100% - 38px)'
         resizeScreen()
     }
 })
@@ -225,12 +184,12 @@ socket.on('statusBackground', function(data) {
 
 socket.on('allowreplay', function(data) {
     if (data === true) {
-        console.log('allowreplay: ' + data)
+        // console.log('allowreplay: ' + data)
         allowreplay = true
         drawMenu(dropupContent.innerHTML + '<a id="credentialsBtn"><i class="fas fa-key fa-fw"></i> Credentials</a>')
     } else {
         allowreplay = false
-        console.log('allowreplay: ' + data)
+        // console.log('allowreplay: ' + data)
     }
 })
 
@@ -268,7 +227,7 @@ function drawMenu(data) {
 // replay password to server, requires
 function replayCredentials() { // eslint-disable-line
     socket.emit('control', 'replayCredentials')
-    console.log('replaying credentials')
+    // console.log('replaying credentials')
     term.focus()
     return false
 }

@@ -3,89 +3,21 @@
 
 <head>
     <title>WebSSH2</title>
-    <style>
-    html,
-    body {
-        background-color: #000;
-        height: 100%;
-        margin: 0;
-    }
-
-    .dropup-content {
-        display: none;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-    }
-
-    a:active,
-    a:visited,
-    a:focus {
-        color: white;
-    }
-
-    ol {
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        white-space: nowrap;
-        list-style: none;
-        top: 22px;
-        left: 0px;
-        padding: 0 0 0 10px;
-        background: #57a2ff;
-        color: white;
-        display: none;
-        max-width: 157px;
-    }
-
-    li {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .dn {
-        display: none;
-    }
-
-    #wrap>a {
-        display: inline-block;
-        position: 5px 8px;
-        margin: 5px;
-    }
-
-    #download {
-        position: relative;
-    }
-
-    .right-info {
-        position: fixed;
-        right: 20px;
-        top: 0px;
-    }
-    </style>
     <link rel="stylesheet" href="/webssh2.css" />
 </head>
 
 <body>
     <div class="box">
-    	<div id="header"></div>
         <div id="terminal-container" class="terminal"></div>
-        <div>
+        <div class="right-info">
             <div id="status"></div>
             <div id="wrap" class="dn">
                 <a href="javascript:;" id="upload">Upload</a>
                 <a href="javascript:;" id="download">Download<ol id="ol"></ol></a>
                 <a href="" target="_blank">New</a>
             </div>
-        </div>
-        <div id="bottomdiv">
-            <div class="dropup" id="menu">Menu
-                <div id="dropupContent" class="dropup-content"></div>
-            </div>
-            <div id="footer"></div>
+    		<div id="header"></div>
+    		<div id="footer"></div>
         </div>
     </div>
     <script src="/webssh2.bundle.js" defer></script>

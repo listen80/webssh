@@ -11,66 +11,27 @@ body {
 #header {
     color: rgb(240, 240, 240);
     background-color: rgb(0, 128, 0);
-    /*width: 100%;*/
-    border-color: white;
-    /*border-style: none none solid none;*/
-    /*border-width: 1px;*/
-    text-align: center;
-    /*flex: 0 1 auto;*/
-    /*z-index: 99;*/
-    /*height:19px;*/
-    /*display: none;*/
+    display: none;
 }
+
+#footer {
+    color: rgb(240, 240, 240);
+    background-color: rgb(50, 50, 50);
+    display: none;
+}
+
 
 .box {
     display: block;
     height: 100%;
 }
 
-#terminal-container {
-    display: block;
-    /*width: calc(100% - 1 px);*/
-    margin: 0 auto;
-    /*padding: 2px;*/
-    /*height: calc(100% - 19px);*/
-    height: 100%;
-}
-
-#terminal-container .terminal {
-    background-color: #000000;
-    color: #fafafa;
-    /*padding: 2px;*/
-    /*height: calc(100% - 19px);*/
-    height: 100%;
-}
-
-#terminal-container .terminal:focus .terminal-cursor {
-    background-color: #fafafa;
-}
-
-#footer {
-    /*display: inline-block;*/
-    color: rgb(240, 240, 240);
-    background-color: rgb(50, 50, 50);
-    /*padding-left: 5px;*/
-    /*padding-right: 5px;*/
-    border-color: white;
-    /*border-style: none none none solid;*/
-    /*border-width: 1px;*/
-    text-align: left;
-    display: none;
-}
-
 #status {
-    /*display: inline-block;*/
     color: rgb(240, 240, 240);
     background-color: rgb(50, 50, 50);
     border-color: white;
     padding: 3px 8px;
-    /*border-style: none solid none solid;*/
-    border-width: 1px;
     text-align: left;
-    z-index: 100;
     border-radius: 4px;
 }
 
@@ -118,7 +79,7 @@ li {
 #wrap>a {
     display: inline-block;
     padding: 3px 8px;
-    margin-left: 5px;
+    margin-right: 5px;
     background-color: #57a2ff;
     border-radius: 4px;
 }
@@ -132,4 +93,23 @@ li {
     right: 21px;
     top: 4px;
     z-index: 99999;
+}
+
+
+
+
+#terminal-container {
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+}
+
+#terminal-container .terminal {
+    background-color: #000000;
+    color: #fafafa;
+    height: 100%;
+}
+
+#terminal-container .terminal:focus .terminal-cursor {
+    background-color: #fafafa;
 }

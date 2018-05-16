@@ -45,10 +45,11 @@ upload.onclick = function(argument) {
 }
 
 function postfile(file) {
-    // console.log(file)
     if (!file || !file.type) {
+        console.log(file)
         return
     }
+    isUploading = true
     var formData = new FormData();
     formData.append('file', file);
     var xhr = new XMLHttpRequest();
@@ -63,10 +64,10 @@ function postfile(file) {
     xhr.onload = function(e) {
         upload.innerHTML = 'Upload'
         term.focus()
-        isUploading = true
+        isUploading = false
     }
     xhr.onerror = function(e) {
-        isUploading = true
+        isUploading = false
     }
     xhr.send(formData);
     term.focus()

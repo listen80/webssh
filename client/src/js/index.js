@@ -13,36 +13,16 @@ Terminal.applyAddon(fit)
 var sessionLogEnable = false
 var loggedData = false
 var allowreplay = false
-var sessionLog, sessionFooter, logDate, currentDate, myFile, errorExists
+var sessionLog, sessionFooter, logDate, currentDate, myFile, errorExists, isUploading = false
 var socket, termid // eslint-disable-line
 var term = new Terminal()
 // DOM properties
 var status = document.getElementById('status')
 var header = document.getElementById('header')
-var dropupContent = document.getElementById('dropupContent')
 var footer = document.getElementById('footer')
-var terminalContainer = document.getElementById('terminal-container')
-
-term.open(terminalContainer)
-term.focus()
-term.fit()
-
-
 var upload = document.getElementById('upload')
 var download = document.getElementById('download')
-
-var isUploading = false
-upload.onclick = function(argument) {
-    if(isUploading) {
-        return
-    }
-    var input = document.createElement('input')
-    input.type = 'file'
-    input.onchange = function() {
-        postfile(this.files[0])
-    }
-    input.click()
-}
+var terminalContainer = document.getElementById('terminal-container')
 
 function postfile(file) {
     if (!file || !file.type) {
@@ -72,11 +52,21 @@ function postfile(file) {
     xhr.send(formData);
     term.focus()
 }
-document.body.onclick = function() {
-    ol.style.display = 'none'
-}
+
+upload.addEventListener('click', function(argument) {
+    if (isUploading) {
+        return
+    }
+    var input = document.createElement('input')
+    input.type = 'file'
+    input.onchange = function() {
+        postfile(this.files[0])
+    }
+    input.click()
+})
+
 download.addEventListener('click', function(e) {
-    if(e.target === this) {
+    if (e.target === this) {
         var xhr = new XMLHttpRequest();
         var user = document.title.split('@')[0]
         var path = encodeURIComponent(document.title.split(': ')[1])
@@ -85,21 +75,27 @@ download.addEventListener('click', function(e) {
             if (this.readyState === 4 && this.status === 200) {
                 var data = JSON.parse(this.responseText || this.response)
                 ol.style.display = 'block'
-                ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`).join('')
-
+                ol.innerHTML = data.dirs.map(function(file) {
+                    return `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`
+                }).join('')
             }
         }
         xhr.send()
     }
 }, false)
-window.addEventListener('resize', resizeScreen, false)
+
 document.body.addEventListener('drop', function(ev) {
     ev.preventDefault();
     postfile(ev.dataTransfer.files[0])
     term.focus()
 })
+
 document.body.addEventListener('dragover', function(ev) {
     ev.preventDefault();
+})
+
+document.addEventListener('click', function(ev) {
+    ol.style.display = 'none'
 })
 
 function resizeScreen() {
@@ -107,20 +103,28 @@ function resizeScreen() {
     socket.emit('resize', { cols: term.cols, rows: term.rows })
 }
 
+window.addEventListener('resize', resizeScreen, false)
+
 if (document.location.pathname) {
     var parts = document.location.pathname.split('/')
     var base = parts.slice(0, parts.length - 1).join('/') + '/'
     var resource = base.substring(1) + 'socket.io'
-    socket = io.connect(null, {
-        resource: resource
-    })
+    socket = io.connect(null, { resource: resource })
 } else {
     socket = io.connect()
 }
 
+term.open(terminalContainer)
+term.focus()
+term.fit()
+
 term.on('data', function(data) {
     // console.warn(data)
     socket.emit('data', data)
+})
+
+term.on('title', function(title) {
+    document.title = title
 })
 
 socket.on('data', function(data) {
@@ -148,7 +152,7 @@ socket.on('title', function(data) {
 })
 
 socket.on('menu', function(data) {
-    drawMenu(data)
+    console.log(data)
 })
 
 socket.on('status', function(data) {
@@ -169,7 +173,6 @@ socket.on('header', function(data) {
     if (data) {
         header.innerHTML = data
         header.style.display = 'block'
-        // terminalContainer.style.height = 'calc(100% - 38px)'
         resizeScreen()
     }
 })
@@ -187,7 +190,7 @@ socket.on('allowreplay', function(data) {
     if (data === true) {
         // console.log('allowreplay: ' + data)
         allowreplay = true
-        drawMenu(dropupContent.innerHTML + '<a id="credentialsBtn"><i class="fas fa-key fa-fw"></i> Credentials</a>')
+        console.log(Credentials)
     } else {
         allowreplay = false
         // console.log('allowreplay: ' + data)
@@ -210,85 +213,3 @@ socket.on('error', function(err) {
     }
     wrap.style.display = 'none'
 })
-
-term.on('title', function(title) {
-    document.title = title
-})
-
-// draw/re-draw menu and reattach listeners
-// when dom is changed, listeners are abandonded
-function drawMenu(data) {
-    console.log(data)
-    return
-    dropupContent.innerHTML = data
-    logBtn.addEventListener('click', toggleLog)
-    allowreplay && credentialsBtn.addEventListener('click', replayCredentials)
-    loggedData && downloadLogBtn.addEventListener('click', downloadLog)
-}
-
-// replay password to server, requires
-function replayCredentials() { // eslint-disable-line
-    socket.emit('control', 'replayCredentials')
-    // console.log('replaying credentials')
-    term.focus()
-    return false
-}
-
-// Set variable to toggle log data from client/server to a varialble
-// for later download
-function toggleLog() { // eslint-disable-line
-    if (sessionLogEnable === true) {
-        sessionLogEnable = false
-        loggedData = true
-        logBtn.innerHTML = '<i class="fas fa-clipboard fa-fw"></i> Start Log'
-        console.log('stopping log, ' + sessionLogEnable)
-        currentDate = new Date()
-        sessionLog = sessionLog + '\r\n\r\nLog End for ' + sessionFooter + ': ' +
-            currentDate.getFullYear() + '/' + (currentDate.getMonth() + 1) + '/' +
-            currentDate.getDate() + ' @ ' + currentDate.getHours() + ':' +
-            currentDate.getMinutes() + ':' + currentDate.getSeconds() + '\r\n'
-        logDate = currentDate
-        term.focus()
-        return false
-    } else {
-        sessionLogEnable = true
-        loggedData = true
-        logBtn.innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i> Stop Log'
-        downloadLogBtn.style.color = '#000'
-        downloadLogBtn.addEventListener('click', downloadLog)
-        console.log('starting log, ' + sessionLogEnable)
-        currentDate = new Date()
-        sessionLog = 'Log Start for ' + sessionFooter + ': ' +
-            currentDate.getFullYear() + '/' + (currentDate.getMonth() + 1) + '/' +
-            currentDate.getDate() + ' @ ' + currentDate.getHours() + ':' +
-            currentDate.getMinutes() + ':' + currentDate.getSeconds() + '\r\n\r\n'
-        logDate = currentDate
-        term.focus()
-        return false
-    }
-}
-
-// cross browser method to "download" an element to the local system
-// used for our client-side logging feature
-function downloadLog() { // eslint-disable-line
-    if (loggedData === true) {
-        myFile = 'WebSSH2-' + logDate.getFullYear() + (logDate.getMonth() + 1) +
-            logDate.getDate() + '_' + logDate.getHours() + logDate.getMinutes() +
-            logDate.getSeconds() + '.log'
-        // regex should eliminate escape sequences from being logged.
-        var blob = new Blob([sessionLog.replace(/[\u001b\u009b][[\]()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><;]/g, '')], {
-            type: 'text/plain'
-        })
-        if (window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveBlob(blob, myFile)
-        } else {
-            var elem = window.document.createElement('a')
-            elem.href = window.URL.createObjectURL(blob)
-            elem.download = myFile
-            document.body.appendChild(elem)
-            elem.click()
-            document.body.removeChild(elem)
-        }
-    }
-    term.focus()
-}

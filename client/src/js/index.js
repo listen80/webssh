@@ -53,13 +53,9 @@ function postfile(file) {
     var oloaded = 0
     xhr.upload.onprogress = function(evt) {
         document.getElementById("time").style.display = 'inline-block'
-        console.log(this, evt)
-        // event.total是需要传输的总字节，event.loaded是已经传输的字节。如果event.lengthComputable不为真，则event.total等于0
-        var html = ''
         if (evt.lengthComputable) { //
-            html += ( Math.round(evt.loaded / evt.total * 100) + "%");
+            time.innerHTML = Math.round(evt.loaded / evt.total * 100) + "%"
         }
-        time.innerHTML = html
     }
     xhr.onload = function(e) {
         document.getElementById("time").style.display = 'inline-block'
@@ -68,9 +64,10 @@ function postfile(file) {
         setTimeout(function(argument) {
             document.getElementById("time").style.display = 'none'
         }, 1000)
-    };
+    }
 
     xhr.send(formData);
+    term.focus()
 }
 document.body.onclick = function() {
     ol.style.display = 'none'
@@ -197,8 +194,7 @@ socket.on('allowreplay', function(data) {
 socket.on('disconnect', function(err) {
     if (!errorExists) {
         status.style.backgroundColor = 'red'
-        status.innerHTML =
-            'WEBSOCKET SERVER DISCONNECTED: ' + err
+        status.innerHTML = 'DISCONNECTED: ' + err
     }
     socket.io.reconnection(false)
     wrap.style.display = 'none'

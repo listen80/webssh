@@ -110,7 +110,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 			'Content-Length': stats.size
 		});
 		fs.createReadStream(path, {
-			encoding: 'utf8'}
+			encoding: 'utf8'
 		}).pipe(res);
 	} else {
 		next()

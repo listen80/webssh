@@ -108,7 +108,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 		res.set({
 			// 'Content-Type': 'application/octet-stream',
 			'Content-Type': 'application/x-download',
-			'Content-Disposition': 'attachment; filename=' + urlencode(fileName),
+			'Content-Disposition': 'attachment; filename=' + encodeURIComponent(fileName),
 			'Content-Length': stats.size
 		});
 		fs.createReadStream(path, {

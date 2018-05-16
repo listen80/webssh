@@ -80,6 +80,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 
 	var path = req.params.path
 	var user = req.params.user
+	var fileName = req.params.fileName
 	path = decodeURIComponent(path)
 	file = decodeURIComponent(fileName)
 	fileName = path + '/' + fileName

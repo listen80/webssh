@@ -84,7 +84,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	path = decodeURIComponent(path)
 	file = decodeURIComponent(fileName)
 	path = path + '/' + fileName
-	fileName = new String(fileName.getBytes(), "ISO-8859-1");
+
 	if (path[0] === '/') {
 
 	} else if (path[0] === '~') {
@@ -108,7 +108,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 		res.set({
 			// 'Content-Type': 'application/octet-stream',
 			'Content-Type': 'application/x-download',
-			'Content-Disposition': 'attachment; filename=' + fileName,
+			'Content-Disposition': 'attachment; filename=' + urlencode(fileName),
 			'Content-Length': stats.size
 		});
 		fs.createReadStream(path, {
@@ -193,22 +193,7 @@ app.post('/file-upload/:user/:path', function(req, res) {
 		res.send(`ok and path is ${path + '/' + file.originalname}`)
 	});
 })
-// res.send("asdasd")
-// return
-// var tmp_path = req.files.thumbnail.path;
-// // 指定文件上传后的目录 - 示例为"images"目录。 
-// var target_path = './public/images/' + req.files.thumbnail.name;
-// // 移动文件
-// fs.rename(tmp_path, target_path, function(err) {
-//   if (err) throw err;
-//   // 删除临时文件夹文件, 
-//   fs.unlink(tmp_path, function() {
-//     if (err) throw err;
-//     res.send('File uploaded to: ' + target_path + ' - ' + req.files.thumbnail.size + ' bytes');
-//   });
-// });
 
-// express error handling
 app.use(function(req, res, next) {
 	res.status(404).send("Sorry can't find that!")
 })

@@ -114,22 +114,22 @@ function postfile(file) {
 document.body.onclick = function() {
     ol.style.display = 'none'
 }
-download.addEventListener('click', function() {
-    var xhr = new XMLHttpRequest();
-    var user = document.title.split('@')[0]
-    var path = encodeURIComponent(document.title.split(': ')[1])
-    xhr.open('GET', `/get-dir/${user}/${path}`, true);
+download.addEventListener('click', function(e) {
+    if(e.target === this) {
+        var xhr = new XMLHttpRequest();
+        var user = document.title.split('@')[0]
+        var path = encodeURIComponent(document.title.split(': ')[1])
+        xhr.open('GET', `/get-dir/${user}/${path}`, true);
+        xhr.onload = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                var data = JSON.parse(this.responseText || this.response)
+                ol.style.display = 'block'
+                ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`).join('')
 
-    xhr.onload = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            var data = JSON.parse(this.responseText || this.response)
-            ol.style.display = 'block'
-            ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`).join('')
-
+            }
         }
+        xhr.send()
     }
-
-    xhr.send()
 }, false)
 window.addEventListener('resize', resizeScreen, false)
 document.body.addEventListener('drop', function(ev) {

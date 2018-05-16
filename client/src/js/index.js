@@ -123,7 +123,7 @@ download.addEventListener('click', function() {
     xhr.onload = function(r) {
         var data = JSON.parse(r.responseText)
         ol.style.display = 'block'
-        ol.innerHTML = data.map((file) => `<li><a href='/file-download/${user}/${path}/${file}' target="_blank">${file}</a></li>`)
+        ol.innerHTML = data.dir.map((file) => `<li><a href='/file-download/${user}/${path}/${file}' target="_blank">${file}</a></li>`)
     }
 
     xhr.send()

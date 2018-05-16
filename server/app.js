@@ -144,7 +144,7 @@ app.get('/get-dir/:user/:path', function(req, res, next) {
 		var dirs = fs.readdirSync(path).filter(function(filename){
 			return fs.statSync(path + '/' + filename).isFile()
 		})
-		res.send(JSON.stringify(dirs))
+		res.send(JSON.stringify({dirs}))
 	} else {
 		next()
 	}

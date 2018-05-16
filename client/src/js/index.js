@@ -125,7 +125,7 @@ term.on('data', function(data) {
 
 socket.on('data', function(data) {
     // console.info(data)npm
-    wrap.style.display = 'block'
+    wrap.style.display = 'inline-block'
     term.write(data)
     if (sessionLogEnable) {
         sessionLog = sessionLog + data

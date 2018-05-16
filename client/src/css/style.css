@@ -53,11 +53,11 @@ a:focus {
 ol {
     position: absolute;
     margin: 0;
-    padding-left: 5px 10px;
+    padding: 5px 10px;
     white-space: nowrap;
     list-style: none;
-    top: 36px;
-    left: 53px;
+    top: 30px;
+    left: 54px;
     background: #57a2ff;
     color: white;
     display: none;

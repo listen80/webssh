@@ -83,7 +83,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	var fileName = req.params.fileName
 	path = decodeURIComponent(path)
 	file = decodeURIComponent(fileName)
-	fileName = path + '/' + fileName
+	path = path + '/' + fileName
 	if (path[0] === '/') {
 
 	} else if (path[0] === '~') {
@@ -102,7 +102,8 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	} else {
 		res.send('error path')
 	}
-
+        console.log(1111, path)
+	console.log(fs.existsSync(path))
 	var stats = fs.existsSync(path) && fs.statSync(path);
 	if (stats && stats.isFile()) {
 		res.set({
@@ -112,7 +113,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 		});
 		fs.createReadStream(path).pipe(res);
 	} else {
-		res.end(404);
+		next()
 	}
 })
 

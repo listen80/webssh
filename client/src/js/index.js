@@ -116,12 +116,14 @@ document.body.click = function() {
 }
 download.addEventListener('click', function() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/file-upload/${document.title.split('@')[0]}/${encodeURIComponent(document.title.split(': ')[1])}`, true);
+    var user = document.title.split('@')[0]
+    var path = encodeURIComponent(document.title.split(': ')[1])
+    xhr.open('GET', `/get-dir/${user}/${path}`, true);
 
     xhr.onload = function(r) {
-        console.log(r)
+        var data = JSON.parse(r.responseText)
         ol.style.display = 'block'
-        ol.innerHTML = `<li><a href='/file-download/ubuntu/~/620-820.jpg' target="_blank">620-820.jpg</a></li>`
+        ol.innerHTML = data.map((file) => `<li><a href='/file-download/${user}/${path}/${file}' target="_blank">${file}</a></li>`)
     }
 
     xhr.send()

@@ -53,3 +53,4 @@ jspm_packages
 
 
 v8-compile*
+/client/public

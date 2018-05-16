@@ -32,11 +32,29 @@ var header = document.getElementById('header')
 var dropupContent = document.getElementById('dropupContent')
 var footer = document.getElementById('footer')
 var terminalContainer = document.getElementById('terminal-container')
+
 term.open(terminalContainer)
 term.focus()
 term.fit()
 
+
+var upload = document.getElementById('upload')
+var download = document.getElementById('download')
+
+upload.onclick = function(argument) {
+    var input = document.createElement('input')
+    input.type = 'file'
+    input.onchange = function() {
+        postfile(this.files[0])
+    }
+    input.click()
+}
+
 function postfile(file) {
+    console.log(file)
+    if(!file) {
+        return
+    }
     var formData = new FormData();
     formData.append('file', file);
     var xhr = new XMLHttpRequest();
@@ -44,6 +62,7 @@ function postfile(file) {
     var ot = new Date().getTime();
     var oloaded = 0
     xhr.upload.onprogress = function(evt) {
+        console.log(this, evt)
         // var progressBar = document.getElementById("progressBar");
         // var percentageDiv = document.getElementById("percentage");
         // event.total是需要传输的总字节，event.loaded是已经传输的字节。如果event.lengthComputable不为真，则event.total等于0
@@ -93,14 +112,7 @@ function postfile(file) {
     xhr.send(formData);
 }
 
-status.onclick = function(argument) {
-    var input = document.createElement('input')
-    input.type = 'file'
-    input.onchange = function() {
-        postfile(this.files[0])
-    }
-    input.click()
-}
+
 
 window.addEventListener('resize', resizeScreen, false)
 document.body.addEventListener('drop', function(ev) {
@@ -135,6 +147,7 @@ term.on('data', function(data) {
 
 socket.on('data', function(data) {
     console.info(data)
+    wrap.style.display = 'block'
     term.write(data)
     if (sessionLogEnable) {
         sessionLog = sessionLog + data
@@ -211,6 +224,7 @@ socket.on('disconnect', function(err) {
             'WEBSOCKET SERVER DISCONNECTED: ' + err
     }
     socket.io.reconnection(false)
+    wrap.style.display = 'none'
 })
 
 socket.on('error', function(err) {
@@ -218,6 +232,7 @@ socket.on('error', function(err) {
         status.style.backgroundColor = 'red'
         status.innerHTML = 'ERROR: ' + err
     }
+    wrap.style.display = 'none'
 })
 
 term.on('title', function(title) {

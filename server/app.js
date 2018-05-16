@@ -140,9 +140,11 @@ app.get('/get-dir/:user/:path', function(req, res, next) {
 	}
 
 	var stats = fs.existsSync(path) && fs.statSync(path);
-	if (stats && stats.isDir()) {
-		fs.readdirSync(path)
-		res.send(JSON.stringify(path))
+	if (stats && stats.isDirectory()) {
+		var dirs = fs.readdirSync(path).filter(function(filename){
+			return fs.statSync(path + '/' + filename).isFile()
+		})
+		res.send(JSON.stringify(dirs))
 	} else {
 		next()
 	}

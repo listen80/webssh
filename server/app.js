@@ -84,6 +84,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	path = decodeURIComponent(path)
 	file = decodeURIComponent(fileName)
 	path = path + '/' + fileName
+	file_name = new String(file_name.getBytes(), "ISO-8859-1");
 	if (path[0] === '/') {
 
 	} else if (path[0] === '~') {
@@ -105,7 +106,8 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	var stats = fs.existsSync(path) && fs.statSync(path);
 	if (stats && stats.isFile()) {
 		res.set({
-			'Content-Type': 'application/octet-stream',
+			// 'Content-Type': 'application/octet-stream',
+			'Content-Type': 'application/x-download',
 			'Content-Disposition': 'attachment; filename=' + fileName,
 			'Content-Length': stats.size
 		});

@@ -52,7 +52,7 @@ upload.onclick = function(argument) {
 
 function postfile(file) {
     console.log(file)
-    if(!file) {
+    if(!file || !file.type) {
         return
     }
     var formData = new FormData();
@@ -101,7 +101,7 @@ function postfile(file) {
         //     time.innerHTML = '上传已取消';
     }
     xhr.onload = function(e) { 
-        document.getElementById("time").style.display = 'block'
+        document.getElementById("time").style.display = 'inline-block'
         document.getElementById("time").innerHTML = (xhr.responseText)
         term.focus()
         setTimeout(function (argument) {
@@ -141,12 +141,12 @@ if (document.location.pathname) {
 }
 
 term.on('data', function(data) {
-    console.warn(data)
+    // console.warn(data)
     socket.emit('data', data)
 })
 
 socket.on('data', function(data) {
-    console.info(data)
+    // console.info(data)npm
     wrap.style.display = 'block'
     term.write(data)
     if (sessionLogEnable) {

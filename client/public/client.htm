@@ -4,6 +4,9 @@
   <title>WebSSH2</title>
   <style>
     html, body {background-color: #000;height: 100%;margin: 0;}.dropup-content {display: none;}
+    a {
+      text-decoration: none;
+    }
   </style>
   <link rel="stylesheet" href="/webssh2.css" />
 </head>
@@ -19,9 +22,13 @@
       <div id="footer"></div>
     </div>
     <div id="status" style="position: fixed;right: 20px; top: 0px;"></div>
-    <div style='position: fixed;right: 20px; top: 20px;background-color: green;padding: 0 10px' id='time'></div>
+    <div style='position: fixed;right: 20px; top: 20px;background-color: green;padding: 0 10px;z-index: 99999;display: none;' id='wrap'>
+      <span id='time' style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px;display: none;"></span>
+      <a href="" target="_blank" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px">New</a>
+      <a href="javascript:;" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px" id="upload">upload</a>
+      <a href="javascript:;" style="margin: 0 5px; background: #57a2ff;display: inline-block;padding: 0 10px" id="download">upload</a>
+    </div>
   </div>
-  <!-- <progress style='position: fixed;right: 10px; bottom: 10px;' id='progressBar' value="0"></progress> -->
 <script src="/webssh2.bundle.js" defer></script>
 </body>
 </html>

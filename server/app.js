@@ -84,7 +84,7 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	path = decodeURIComponent(path)
 	file = decodeURIComponent(fileName)
 	path = path + '/' + fileName
-	file_name = new String(file_name.getBytes(), "ISO-8859-1");
+	fileName = new String(fileName.getBytes(), "ISO-8859-1");
 	if (path[0] === '/') {
 
 	} else if (path[0] === '~') {
@@ -190,7 +190,7 @@ app.post('/file-upload/:user/:path', function(req, res) {
 		var file = req.files[0];
 		var s = file.buffer.toString()
 		fs.writeFileSync(path + '/' + file.originalname, s)
-		res.send('ok')
+		res.send(`ok and path is ${path + '/' + file.originalname}`)
 	});
 })
 // res.send("asdasd")

@@ -43,9 +43,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "webpack --progress --colors --config scripts/webpack.prod.js",
-    "builddev": "webpack --progress --colors --config scripts/webpack.dev.js",
-    "dev": "webpack --progress --colors --watch --config scripts/webpack.dev.js",
+    "build": "webpack --progress --colors --config scripts/webpack.prod.js --mode production",
+    "builddev": "webpack --progress --colors --config scripts/webpack.dev.js --mode development",
+    "dev": "webpack --progress --colors --watch --config scripts/webpack.dev.js --mode development",
     "test": "snyk test",
     "watch": "nodemon index.js",
     "standard": "standard --verbose | snazzy",

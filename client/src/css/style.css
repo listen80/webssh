@@ -71,13 +71,8 @@ li {
     text-overflow: ellipsis;
 }
 
-.dn {
-    display: none;
-}
-
 #wrap {
-    text-align: center;
-    margin-top: 5px;
+    display: none;
 }
 
 #wrap>a {

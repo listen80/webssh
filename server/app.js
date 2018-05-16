@@ -109,7 +109,9 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 			'Content-Disposition': 'attachment; filename=' + fileName,
 			'Content-Length': stats.size
 		});
-		fs.createReadStream(path).pipe(res);
+		fs.createReadStream(path, {
+			encoding: 'utf8'}
+		}).pipe(res);
 	} else {
 		next()
 	}

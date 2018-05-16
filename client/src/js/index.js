@@ -52,7 +52,7 @@ upload.onclick = function(argument) {
 
 function postfile(file) {
     console.log(file)
-    if(!file || !file.type) {
+    if (!file || !file.type) {
         return
     }
     var formData = new FormData();
@@ -100,11 +100,11 @@ function postfile(file) {
         // if (bspeed == 0)
         //     time.innerHTML = '上传已取消';
     }
-    xhr.onload = function(e) { 
+    xhr.onload = function(e) {
         document.getElementById("time").style.display = 'inline-block'
         document.getElementById("time").innerHTML = (xhr.responseText)
         term.focus()
-        setTimeout(function (argument) {
+        setTimeout(function(argument) {
             document.getElementById("time").style.display = 'none'
         }, 1500)
     };
@@ -120,10 +120,13 @@ download.addEventListener('click', function() {
     var path = encodeURIComponent(document.title.split(': ')[1])
     xhr.open('GET', `/get-dir/${user}/${path}`, true);
 
-    xhr.onload = function(r) {
-        var data = JSON.parse(r.responseText)
-        ol.style.display = 'block'
-        ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}' target="_blank">${file}</a></li>`)
+    xhr.onload = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            var data = JSON.parse(this.responseText || this.response)
+            ol.style.display = 'block'
+            ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}' target="_blank">${file}</a></li>`)
+
+        }
     }
 
     xhr.send()

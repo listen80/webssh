@@ -110,7 +110,6 @@ app.post('/file-upload/:user/:path', function(req, res) {
     } 
     var file = req.files[0];
     var s = file.buffer.toString()
-    console.log(path + '/' + file.originalname)
     fs.writeFileSync(path + '/' + file.originalname, s)
     res.send('ok')
   });

@@ -81,7 +81,14 @@ function postfile(file) {
         // if (bspeed == 0)
         //     time.innerHTML = '上传已取消';
     }
-    xhr.onload = function(e) { document.getElementById("time").innerHTML = (e.responseText) };
+    xhr.onload = function(e) { 
+        document.getElementById("time").style = 'block'
+        document.getElementById("time").innerHTML = (xhr.responseText) 
+        setTimeout(function (argument) {
+            document.getElementById("time").style = 'none'
+        }, 1500)
+    };
+
     xhr.send(formData);
 }
 

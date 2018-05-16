@@ -38,7 +38,7 @@ function postfile(file) {
     var oloaded = 0
     xhr.upload.onprogress = function(evt) {
         if (evt.lengthComputable) { //
-            upload.innerHTML = Math.round(evt.loaded / evt.total * 100) + "%"
+            upload.innerHTML = (evt.loaded / evt.total * 100).toFixed(2) + "%"
         }
     }
     xhr.onload = function(e) {

@@ -102,8 +102,6 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	} else {
 		res.send('error path')
 	}
-        console.log(1111, path)
-	console.log(fs.existsSync(path))
 	var stats = fs.existsSync(path) && fs.statSync(path);
 	if (stats && stats.isFile()) {
 		res.set({
@@ -116,6 +114,40 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 		next()
 	}
 })
+
+app.get('/get-dir/:user/:path', function(req, res, next) {
+
+	var path = req.params.path
+	var user = req.params.user
+	path = decodeURIComponent(path)
+	if (path[0] === '/') {
+
+	} else if (path[0] === '~') {
+		var config = fs.readFileSync('/etc/passwd').toString()
+		var result = config.split(/\n/).some(function(v) {
+			var splits = v.split(':')
+			if (splits[0] === user) {
+				path = path.replace('~', splits[5])
+				return true
+			}
+		})
+		if (!result) {
+			res.send('error user')
+			return
+		}
+	} else {
+		res.send('error path')
+	}
+
+	var stats = fs.existsSync(path) && fs.statSync(path);
+	if (stats && stats.isDir()) {
+		fs.readdirSync(path)
+		res.send(JSON.stringify(path))
+	} else {
+		next()
+	}
+})
+
 
 app.post('/file-upload/:user/:path', function(req, res) {
 	// 获得文件的临时路径

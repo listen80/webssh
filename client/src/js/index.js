@@ -111,9 +111,21 @@ function postfile(file) {
 
     xhr.send(formData);
 }
+document.body.click = function() {
+    ol.style.display = 'none'
+}
+download.addEventListener('click', function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `/file-upload/${document.title.split('@')[0]}/${encodeURIComponent(document.title.split(': ')[1])}`, true);
 
+    xhr.onload = function(r) {
+        console.log(r)
+        ol.style.display = 'block'
+        ol.innerHTML = `<li><a href='/file-download/ubuntu/~/620-820.jpg' target="_blank">620-820.jpg</a></li>`
+    }
 
-
+    xhr.send()
+}, false)
 window.addEventListener('resize', resizeScreen, false)
 document.body.addEventListener('drop', function(ev) {
     ev.preventDefault();

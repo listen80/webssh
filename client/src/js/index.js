@@ -83,7 +83,8 @@ function postfile(file) {
     }
     xhr.onload = function(e) { 
         document.getElementById("time").style.display = 'block'
-        document.getElementById("time").innerHTML = (xhr.responseText) 
+        document.getElementById("time").innerHTML = (xhr.responseText)
+        term.focus()
         setTimeout(function (argument) {
             document.getElementById("time").style.display = 'none'
         }, 1500)
@@ -105,6 +106,7 @@ window.addEventListener('resize', resizeScreen, false)
 document.body.addEventListener('drop', function(ev) {
     ev.preventDefault();
     postfile(ev.dataTransfer.files[0])
+    term.focus()
 })
 document.body.addEventListener('dragover', function(ev) {
     ev.preventDefault();

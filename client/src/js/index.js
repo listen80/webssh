@@ -111,7 +111,7 @@ function postfile(file) {
 
     xhr.send(formData);
 }
-document.body.click = function() {
+document.body.onclick = function() {
     ol.style.display = 'none'
 }
 download.addEventListener('click', function() {
@@ -124,7 +124,7 @@ download.addEventListener('click', function() {
         if (this.readyState === 4 && this.status === 200) {
             var data = JSON.parse(this.responseText || this.response)
             ol.style.display = 'block'
-            ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}' target="_blank">${file}</a></li>`)
+            ol.innerHTML = data.dirs.map((file) => `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`).join('')
 
         }
     }

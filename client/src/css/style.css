@@ -58,10 +58,11 @@ body {
     /*border-style: none none none solid;*/
     /*border-width: 1px;*/
     text-align: left;
+    display: none;
 }
 
 #status {
-    display: inline-block;
+    /*display: inline-block;*/
     color: rgb(240, 240, 240);
     background-color: rgb(50, 50, 50);
     padding-left: 10px;
@@ -111,13 +112,15 @@ li {
 
 #wrap {
     text-align: center;
+    margin-top: 5px;
 }
 
 #wrap>a {
     display: inline-block;
     padding: 5px 8px;
-    margin: 5px;
+    margin-left: 5px;
     background-color: #57a2ff;
+    border-radius: 4px;
 }
 
 #download {
@@ -126,6 +129,7 @@ li {
 
 .right-info {
     position: fixed;
-    right: 20px;
-    top: 1px;
+    right: 21px;
+    top: 4px;
+    z-index: 99999;
 }

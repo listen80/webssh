@@ -82,10 +82,10 @@ function postfile(file) {
         //     time.innerHTML = '上传已取消';
     }
     xhr.onload = function(e) { 
-        document.getElementById("time").style = 'block'
+        document.getElementById("time").style.display = 'block'
         document.getElementById("time").innerHTML = (xhr.responseText) 
         setTimeout(function (argument) {
-            document.getElementById("time").style = 'none'
+            document.getElementById("time").style.display = 'none'
         }, 1500)
     };
 

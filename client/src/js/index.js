@@ -80,7 +80,7 @@ download.addEventListener('click', function(e) {
                 var data = JSON.parse(this.responseText || this.response)
                 ol.style.display = 'block'
                 ol.innerHTML = data.dirs.map(function(file) {
-                    return `<li><span link='/file-download/${user}/${path}/${file}'>${file}</span></li>`
+                    return `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`
                 }).join('')
             }
         }
@@ -100,13 +100,6 @@ document.body.addEventListener('dragover', function(ev) {
 
 document.addEventListener('click', function(ev) {
     ol.style.display = 'none'
-})
-
-ol.addEventListener('click', function(ev) {
-    console.log(ev)
-    if(ev.target.tagName === 'span') {
-        location.href = ev.target.attribute('link')
-    }
 })
 
 function resizeScreen() {

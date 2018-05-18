@@ -29,7 +29,7 @@ newButton.addEventListener('click', function(argument) {
 })
 
 function postfile(file) {
-    if (!file) {
+    if (!file || !file.size) {
         console.log(file)
         return
     }

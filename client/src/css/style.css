@@ -70,6 +70,7 @@ li {
     line-height: 26px;
     background-color: #57a2ff;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 #download {

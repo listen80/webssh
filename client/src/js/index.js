@@ -24,6 +24,10 @@ var upload = document.getElementById('upload')
 var download = document.getElementById('download')
 var terminalContainer = document.getElementById('terminal-container')
 var newButton = document.getElementById('new')
+newButton.addEventListener('click', function(argument) {
+    open('./')
+})
+
 function postfile(file) {
     if (!file) {
         console.log(file)

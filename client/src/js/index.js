@@ -23,7 +23,7 @@ var footer = document.getElementById('footer')
 var upload = document.getElementById('upload')
 var download = document.getElementById('download')
 var terminalContainer = document.getElementById('terminal-container')
-
+var newButton = document.getElementById('new')
 function postfile(file) {
     if (!file) {
         console.log(file)

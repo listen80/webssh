@@ -39,17 +39,6 @@ body {
     display: inline-block;
 }
 
-a {
-    text-decoration: none;
-    color: white;
-}
-
-a:active,
-a:visited,
-a:focus {
-    color: white;
-}
-
 ol {
     position: absolute;
     margin: 0;
@@ -75,7 +64,7 @@ li {
     display: none;
 }
 
-#wrap>a {
+#wrap>span {
     display: inline-block;
     padding: 0px 8px;
     line-height: 26px;

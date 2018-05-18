@@ -133,7 +133,7 @@ term.on('title', function(title) {
 
 socket.on('data', function(data) {
     // console.info(data)npm
-    wrap.style.display = 'inline-block'
+    control.style.display = 'inline-block'
     term.write(data)
     if (sessionLogEnable) {
         sessionLog = sessionLog + data
@@ -207,7 +207,7 @@ socket.on('disconnect', function(err) {
         status.innerHTML = 'DISCONNECTED: ' + err
     }
     socket.io.reconnection(false)
-    wrap.style.display = 'none'
+    control.style.display = 'none'
 })
 
 socket.on('error', function(err) {
@@ -215,5 +215,5 @@ socket.on('error', function(err) {
         status.style.backgroundColor = 'red'
         status.innerHTML = 'ERROR: ' + err
     }
-    wrap.style.display = 'none'
+    control.style.display = 'none'
 })

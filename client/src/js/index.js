@@ -25,7 +25,7 @@ var download = document.getElementById('download')
 var terminalContainer = document.getElementById('terminal-container')
 
 function postfile(file) {
-    if (!file || !file.type) {
+    if (!file) {
         console.log(file)
         return
     }

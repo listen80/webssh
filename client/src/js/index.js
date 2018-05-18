@@ -103,8 +103,9 @@ document.addEventListener('click', function(ev) {
 })
 
 ol.addEventListener('click', function(ev) {
+    console.log(ev)
     if(ev.target.tagName === 'span') {
-        window.open(ev.target.attribute('link'))
+        location.href = ev.target.attribute('link')
     }
 })
 

@@ -55,6 +55,10 @@ ol {
     border-radius: 5px;
 }
 
+ol span {
+    cursor: pointer;
+}
+
 li {
     overflow: hidden;
     text-overflow: ellipsis;

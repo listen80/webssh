@@ -17,14 +17,31 @@ var sessionLog, sessionFooter, logDate, currentDate, myFile, errorExists, isUplo
 var socket, termid // eslint-disable-line
 var term = new Terminal()
 // DOM properties
-var status = document.getElementById('status')
-var header = document.getElementById('header')
-var footer = document.getElementById('footer')
-var upload = document.getElementById('upload')
-var download = document.getElementById('download')
-var terminalContainer = document.getElementById('terminal-container')
-var newButton = document.getElementById('new')
-newButton.addEventListener('click', function(argument) {
+var $ = function(q) {
+    return document.querySelector(q)
+}
+var status = $('#status')
+var header = $('#header')
+var footer = $('#footer')
+
+$('#upload').on('click', function(argument) {
+    if (isUploading) {
+        return
+    }
+    var input = document.createElement('input')
+    input.type = 'file'
+    input.onchange = function() {
+        postfile(this.files[0])
+    }
+    input.click()
+})
+
+var download = $('#download')
+var terminalContainer = $('#terminal-container')
+
+Node.prototype.on = Node.prototype.addEventListener
+
+$('#new').on('click', function(argument) {
     open('./')
 })
 
@@ -39,10 +56,10 @@ function postfile(file) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', `/file-upload/${document.title.split('@')[0]}/${encodeURIComponent(document.title.split(': ')[1])}`, true);
     var ot = new Date().getTime();
-    var oloaded = 0
+
     xhr.upload.onprogress = function(evt) {
-        if (evt.lengthComputable) { //
-            upload.innerHTML = (evt.loaded / evt.total * 100).toFixed(2) + "%"
+        if (evt.lengthComputable) {
+            upload.innerHTML = Math.floor(evt.loaded / evt.total * 100) + "%"
         }
     }
     xhr.onload = function(e) {
@@ -57,19 +74,9 @@ function postfile(file) {
     term.focus()
 }
 
-upload.addEventListener('click', function(argument) {
-    if (isUploading) {
-        return
-    }
-    var input = document.createElement('input')
-    input.type = 'file'
-    input.onchange = function() {
-        postfile(this.files[0])
-    }
-    input.click()
-})
 
-download.addEventListener('click', function(e) {
+
+download.on('click', function(e) {
     if (e.target === this) {
         var xhr = new XMLHttpRequest();
         var user = document.title.split('@')[0]
@@ -88,17 +95,17 @@ download.addEventListener('click', function(e) {
     }
 }, false)
 
-document.body.addEventListener('drop', function(ev) {
+document.on('drop', function(ev) {
     ev.preventDefault();
     postfile(ev.dataTransfer.files[0])
     term.focus()
 })
 
-document.body.addEventListener('dragover', function(ev) {
+document.on('dragover', function(ev) {
     ev.preventDefault();
 })
 
-document.addEventListener('click', function(ev) {
+document.on('click', function(ev) {
     ol.style.display = 'none'
 })
 
@@ -107,7 +114,7 @@ function resizeScreen() {
     socket.emit('resize', { cols: term.cols, rows: term.rows })
 }
 
-window.addEventListener('resize', resizeScreen, false)
+window.on('resize', resizeScreen, false)
 
 if (document.location.pathname) {
     var parts = document.location.pathname.split('/')
@@ -119,8 +126,10 @@ if (document.location.pathname) {
 }
 
 term.open(terminalContainer)
+
+resizeScreen()
+
 term.focus()
-term.fit()
 
 term.on('data', function(data) {
     // console.warn(data)

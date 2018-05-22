@@ -1,50 +1,41 @@
 'use strict'
 
-// import * as io from 'socket.io-client'
-// import * as Terminal from 'xterm/dist/xterm'
-// import * as fit from 'xterm/dist/addons/fit/fit'
-
-// require('xterm/dist/xterm.css')
 require('../css/style.css')
 
-// Terminal.applyAddon(fit)
-
-/* global Blob, logBtn, credentialsBtn, downloadLogBtn */
-var sessionLogEnable = false
-var loggedData = false
 var allowreplay = false
-var sessionLog, sessionFooter, logDate, currentDate, myFile, errorExists, isUploading = false
-var socket, termid // eslint-disable-line
+
+var socket = null
+if (document.location.pathname) {
+    var parts = document.location.pathname.split('/')
+    var base = parts.slice(0, parts.length - 1).join('/') + '/'
+    var resource = base.substring(1) + 'socket.io'
+    socket = io.connect(null, { resource: resource })
+} else {
+    socket = io.connect()
+}
+
 var term = new Terminal()
-// DOM properties
+term.open($('#terminal'), true)
+term.focus()
+
+// com func
 var $ = function(q) {
     return document.querySelector(q)
 }
 
 Node.prototype.on = Node.prototype.addEventListener
 
-$('#upload').on('click', function(argument) {
-    if (isUploading) {
-        return
-    }
-    var input = document.createElement('input')
-    input.type = 'file'
-    input.onchange = function() {
-        postfile(this.files[0])
-    }
-    input.click()
-})
-var control = $('#control')
-var download = $('#download')
-
-console.warn('ok')
-var container = $('#terminal')
-
+// new 按钮
 $('#new').on('click', function(argument) {
     open('./')
 })
 
+// 上传
+var isUploading = false
 function postfile(file) {
+    if (isUploading) {
+        return
+    }
     if (!file || !file.size) {
         console.log(file)
         return
@@ -73,7 +64,27 @@ function postfile(file) {
     term.focus()
 }
 
-download.on('click', function(e) {
+document.on('drop', function(ev) {
+    ev.preventDefault();
+    postfile(ev.dataTransfer.files[0])
+    term.focus()
+})
+
+document.on('dragover', function(ev) {
+    ev.preventDefault();
+})
+
+$('#upload').on('click', function(argument) {
+    var input = document.createElement('input')
+    input.type = 'file'
+    input.onchange = function() {
+        postfile(this.files[0])
+    }
+    input.click()
+})
+
+// 下载
+$('#download').on('click', function(e) {
     if (e.target === this) {
         var xhr = new XMLHttpRequest();
         var user = document.title.split('@')[0]
@@ -102,60 +113,34 @@ ol.onclick = function(e) {
     }
 }
 
-document.on('drop', function(ev) {
-    ev.preventDefault();
-    postfile(ev.dataTransfer.files[0])
-    term.focus()
-})
-
-document.on('dragover', function(ev) {
-    ev.preventDefault();
-})
-
 document.on('click', function(ev) {
     ol.style.display = 'none'
 })
 
+
+// onresize
 function resizeScreen() {
     term.fit()
     socket.emit('resize', { cols: term.cols, rows: term.rows })
 }
 
 window.addEventListener('resize', resizeScreen, false)
-window.addEventListener('resize', function() {socket.emit('disconnect')}, false)
-
-if (document.location.pathname) {
-    var parts = document.location.pathname.split('/')
-    var base = parts.slice(0, parts.length - 1).join('/') + '/'
-    var resource = base.substring(1) + 'socket.io'
-    socket = io.connect(null, { resource: resource })
-} else {
-    socket = io.connect()
-}
-
-term.open(container, true)
-term.focus()
+window.addEventListener('beforeunload', function() {socket.emit('disconnect')}, false)
 
 resizeScreen()
 
-
+// io
 term.on('data', function(data) {
     // console.warn(data)
     socket.emit('data', data)
 })
 
 term.on('title', function(title) {
-    console.log(11111111111111111111, title)
     document.title = title
 })
 
 socket.on('data', function(data) {
-    // console.info(data)npm
-    control.style.display = 'inline-block'
     term.write(data)
-    if (sessionLogEnable) {
-        sessionLog = sessionLog + data
-    }
 })
 
 socket.on('connect', function() {
@@ -179,63 +164,38 @@ socket.on('menu', function(data) {
 
 socket.on('status', function(data) {
     console.log('status', data)
-    // status.innerHTML = data
 })
 
 socket.on('ssherror', function(data) {
     // alert(data)
     console.error(data)
-    // status.innerHTML = data
-    // status.style.backgroundColor = 'red'
     errorExists = true
 })
 
 socket.on('headerBackground', function(data) {
     console.log('headerBackground' ,data)
-    // header.style.backgroundColor = data
-})
-
-socket.on('header', function(data) {
-    console.log('header', data)
-    // if (data) {
-    //     header.innerHTML = data
-    //     header.style.display = 'block'
-    //     resizeScreen()
-    // }
-})
-
-socket.on('footer', function(data) {
-    console.log('footer', data)
-    sessionFooter = data
-    // footer.innerHTML = data
 })
 
 socket.on('allowreplay', function(data) {
     if (data === true) {
-        // console.log('allowreplay: ' + data)
+        console.log('allowreplay: ' + data)
         allowreplay = true
-        console.log(Credentials)
+        // console.log(Credentials)
     } else {
         allowreplay = false
-        // console.log('allowreplay: ' + data)
+        console.log('allowreplay: ' + data)
     }
 })
 
 socket.on('disconnect', function(err) {
     if (!errorExists) {
         console.log('disconnect')
-        // status.style.backgroundColor = 'red'
-        // status.innerHTML = 'DISCONNECTED: ' + err
     }
     socket.io.reconnection(false)
-    control.style.display = 'none'
 })
 
 socket.on('error', function(err) {
     if (!errorExists) {
         console.log('error')
-        // status.style.backgroundColor = 'red'
-        // status.innerHTML = 'ERROR: ' + err
     }
-    control.style.display = 'none'
 })

@@ -38,7 +38,7 @@ $('#upload').on('click', function(argument) {
 })
 var control = $('#control')
 var download = $('#download')
-var terminalContainer = $('#terminal-container')
+var container = $('#terminal')
 
 $('#new').on('click', function(argument) {
     open('./')
@@ -124,7 +124,7 @@ if (document.location.pathname) {
     socket = io.connect()
 }
 
-term.open(terminalContainer, true)
+term.open(container, true)
 term.focus()
 
 resizeScreen()

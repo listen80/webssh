@@ -23,7 +23,17 @@ var myutil = require('./util')
 var validator = require('validator')
 var io = require('socket.io')(server, { serveClient: false })
 var socket = require('./socket')
-var expressOptions = require('./expressOptions')
+var expressOptions = {
+  dotfiles: 'ignore',
+  etag: false,
+  extensions: ['htm', 'html'],
+  index: false,
+  maxAge: '1s',
+  redirect: false,
+  setHeaders: function (res, path, stat) {
+    res.set('x-timestamp', Date.now())
+  }
+}
 
 // express
 app.use(compression({ level: 9 }))
@@ -37,7 +47,8 @@ app.use(express.static(publicPath, expressOptions))
 
 app.get('/:host?', function(req, res, next) {
 	res.sendFile(path.join(path.join(publicPath, 'client.htm')))
-	req.params.host = req.params.host || '127.0.0.1'
+	req.params.host = req.params.host || "10.12.239.208"
+	req.query.port = "36000"
 	// capture, assign, and validated variables
 	req.session.ssh = {
 		host: (validator.isIP(req.params.host + '') && req.params.host) ||

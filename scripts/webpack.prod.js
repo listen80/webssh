@@ -1,13 +1,13 @@
 const merge = require('webpack-merge')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const common = require('./webpack.common.js')
-
+const webpack = require('webpack')
 module.exports = merge(common, {
   plugins: [
-    new UglifyJSPlugin({
+    new webpack.optimize.UglifyJsPlugin({
       uglifyOptions: {
         ie8: false,
         dead_code: true,
+        sourceMap: true,
         output: {
           comments: false,
           beautify: false

@@ -23,22 +23,16 @@ module.exports = {
     path: path.resolve(__dirname, '../client/public')
   },
   module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: {discardComments: {removeAll: true}}
-              }
-            }
-          ]
-        })
-      }
-    ]
+    loaders: [{
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      loader: 'url-loader?limit=10240&name=img/[name].[hash:8].[ext]'
+    }, {
+      test: /\.tpl$/,
+      loader: 'compressed-string-loader'
+    }]
   },
   devtool: 'source-map'
 }

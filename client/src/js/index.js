@@ -48,9 +48,10 @@ function postfile(file) {
     var formData = new FormData();
     formData.append('file', file);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `/file-upload/${document.title.split('@')[0]}/${encodeURIComponent(document.title.split(': ')[1])}`, true);
-    var ot = new Date().getTime();
+    var user = document.title.split('@')[0]
+    var path = encodeURIComponent(document.title.split(': ')[1])
 
+    xhr.open('POST', "/file-upload/" + user +"/" + path, true);
     xhr.upload.onprogress = function(evt) {
         if (evt.lengthComputable) {
             upload.innerHTML = Math.floor(evt.loaded / evt.total * 100) + "%"
@@ -93,12 +94,12 @@ $('#download').on('click', function(e) {
         var xhr = new XMLHttpRequest();
         var user = document.title.split('@')[0]
         var path = encodeURIComponent(document.title.split(': ')[1])
-        xhr.open('GET', `/get-dir/${user}/${path}`, true);
+        xhr.open('GET', "/get-dir/" + user + "/" + path, true);
         xhr.onload = function() {
             if (this.readyState === 4 && this.status === 200) {
                 var data = JSON.parse(this.responseText || this.response)
                 var html = data.dirs.map(function(file) {
-                    return `<li><span url='/file-download/${user}/${path}/${file}'>${file}</span></li>`
+                    return "<li><span url='/file-download/" + user + "/" + path +"/" + file + "'>" + file +"</span></li>"
                 }).join('')
                 if(html) {
                     ol.style.display = 'block'

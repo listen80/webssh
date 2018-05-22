@@ -122,6 +122,7 @@ function resizeScreen() {
 }
 
 window.addEventListener('resize', resizeScreen, false)
+window.addEventListener('resize', function() {socket.emit('disconnect')}, false)
 
 if (document.location.pathname) {
     var parts = document.location.pathname.split('/')

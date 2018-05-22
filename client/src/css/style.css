@@ -68,22 +68,22 @@ a:focus {
     color: white;
 }
 
-::-webkit-scrollbar {
+ ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track-piece {
-    background-color: #ccc;
+    background-color: #ddd;
     -webkit-border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-    background-color: #aaa;
+    background-color: #999;
     -webkit-border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    background-color: #aaa;
+    background-color: #999;
     -webkit-border-radius: 8px;
 }

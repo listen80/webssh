@@ -21,8 +21,6 @@ var $ = function(q) {
     return document.querySelector(q)
 }
 
-var header = $('#header')
-var footer = $('#footer')
 Node.prototype.on = Node.prototype.addEventListener
 
 $('#upload').on('click', function(argument) {
@@ -38,6 +36,8 @@ $('#upload').on('click', function(argument) {
 })
 var control = $('#control')
 var download = $('#download')
+
+console.warn('ok')
 var container = $('#terminal')
 
 $('#new').on('click', function(argument) {
@@ -145,6 +145,7 @@ term.on('data', function(data) {
 })
 
 term.on('title', function(title) {
+    console.log(11111111111111111111, title)
     document.title = title
 })
 

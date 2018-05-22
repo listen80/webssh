@@ -2,7 +2,7 @@
 
 // import * as io from 'socket.io-client'
 // import * as Terminal from 'xterm/dist/xterm'
-import * as fit from 'xterm/dist/addons/fit/fit'
+// import * as fit from 'xterm/dist/addons/fit/fit'
 
 require('xterm/dist/xterm.css')
 require('../css/style.css')
@@ -158,7 +158,7 @@ socket.on('setTerminalOpts', function(data) {
     term.setOption('cursorBlink', data.cursorBlink)
     term.setOption('scrollback', data.scrollback)
     term.setOption('tabStopWidth', data.tabStopWidth)
-    term.setOption('bellStyle', data.bellStyle)
+    // term.setOption('bellStyle', data.bellStyle)
 })
 
 socket.on('title', function(data) {

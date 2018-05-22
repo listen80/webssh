@@ -186,16 +186,18 @@ socket.on('headerBackground', function(data) {
 })
 
 socket.on('header', function(data) {
-    if (data) {
-        header.innerHTML = data
-        header.style.display = 'block'
-        resizeScreen()
-    }
+    console.log('header', data)
+    // if (data) {
+    //     header.innerHTML = data
+    //     header.style.display = 'block'
+    //     resizeScreen()
+    // }
 })
 
 socket.on('footer', function(data) {
+    console.log('footer', data)
     sessionFooter = data
-    footer.innerHTML = data
+    // footer.innerHTML = data
 })
 
 socket.on('allowreplay', function(data) {

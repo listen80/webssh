@@ -4,7 +4,7 @@
 // import * as Terminal from 'xterm/dist/xterm'
 // import * as fit from 'xterm/dist/addons/fit/fit'
 
-require('xterm/dist/xterm.css')
+// require('xterm/dist/xterm.css')
 require('../css/style.css')
 
 // Terminal.applyAddon(fit)
@@ -111,7 +111,7 @@ document.on('click', function(ev) {
 })
 
 function resizeScreen() {
-    // term.fit()
+    term.fit()
     socket.emit('resize', { cols: term.cols, rows: term.rows })
 }
 

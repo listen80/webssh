@@ -20,7 +20,7 @@ var term = new Terminal()
 var $ = function(q) {
     return document.querySelector(q)
 }
-var status = $('#status')
+
 var header = $('#header')
 var footer = $('#footer')
 Node.prototype.on = Node.prototype.addEventListener
@@ -39,8 +39,6 @@ $('#upload').on('click', function(argument) {
 
 var download = $('#download')
 var terminalContainer = $('#terminal-container')
-
-
 
 $('#new').on('click', function(argument) {
     open('./')
@@ -170,12 +168,15 @@ socket.on('menu', function(data) {
 })
 
 socket.on('status', function(data) {
-    status.innerHTML = data
+    console.log('status', data)
+    // status.innerHTML = data
 })
 
 socket.on('ssherror', function(data) {
-    status.innerHTML = data
-    status.style.backgroundColor = 'red'
+    // alert(data)
+    console.error(data)
+    // status.innerHTML = data
+    // status.style.backgroundColor = 'red'
     errorExists = true
 })
 
@@ -213,8 +214,9 @@ socket.on('allowreplay', function(data) {
 
 socket.on('disconnect', function(err) {
     if (!errorExists) {
-        status.style.backgroundColor = 'red'
-        status.innerHTML = 'DISCONNECTED: ' + err
+        console.log('disconnect')
+        // status.style.backgroundColor = 'red'
+        // status.innerHTML = 'DISCONNECTED: ' + err
     }
     socket.io.reconnection(false)
     control.style.display = 'none'
@@ -222,8 +224,9 @@ socket.on('disconnect', function(err) {
 
 socket.on('error', function(err) {
     if (!errorExists) {
-        status.style.backgroundColor = 'red'
-        status.innerHTML = 'ERROR: ' + err
+        console.log('error')
+        // status.style.backgroundColor = 'red'
+        // status.innerHTML = 'ERROR: ' + err
     }
     control.style.display = 'none'
 })

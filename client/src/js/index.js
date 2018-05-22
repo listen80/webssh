@@ -183,7 +183,7 @@ socket.on('allowreplay', function(data) {
 })
 
 socket.on('disconnect', function(err) {
-    console.log('disconnect', e)
+    console.log('disconnect', err)
     socket.io.reconnection(false)
 })
 

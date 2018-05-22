@@ -49,14 +49,12 @@ app.get('/:host?', function(req, res, next) {
 	res.sendFile(path.join(path.join(publicPath, 'client.htm')))
 	req.params.host = req.params.host || "10.12.239.208"
 	req.query.port = "36000"
-	// capture, assign, and validated variables
 	req.session.ssh = {
 		host: (validator.isIP(req.params.host + '') && req.params.host) ||
 			(validator.isFQDN(req.params.host) && req.params.host) ||
 			(/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.params.host) &&
 				req.params.host) || config.ssh.host,
-		port: (validator.isInt(req.query.port + '', { min: 1, max: 65535 }) &&
-			req.query.port) || config.ssh.port,
+		port: (validator.isInt(req.query.port + '', { min: 1, max: 65535 }) && req.query.port) || config.ssh.port,
 		header: {
 			name: req.query.header || config.header.text,
 			background: req.query.headerBackground || config.header.background
@@ -64,8 +62,7 @@ app.get('/:host?', function(req, res, next) {
 		algorithms: config.algorithms,
 		keepaliveInterval: config.ssh.keepaliveInterval,
 		keepaliveCountMax: config.ssh.keepaliveCountMax,
-		term: (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.query.sshterm) &&
-			req.query.sshterm) || config.ssh.term,
+		term: (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.query.sshterm) && req.query.sshterm) || config.ssh.term,
 		terminal: {
 			cursorBlink: (validator.isBoolean(req.query.cursorBlink + '') ? myutil.parseBool(req.query.cursorBlink) : config.terminal.cursorBlink),
 			scrollback: (validator.isInt(req.query.scrollback + '', { min: 1, max: 200000 }) && req.query.scrollback) ? req.query.scrollback : config.terminal.scrollback,
@@ -78,8 +75,7 @@ app.get('/:host?', function(req, res, next) {
 			client: config.serverlog.client || false,
 			server: config.serverlog.server || false
 		},
-		readyTimeout: (validator.isInt(req.query.readyTimeout + '', { min: 1, max: 300000 }) &&
-			req.query.readyTimeout) || config.ssh.readyTimeout
+		readyTimeout: (validator.isInt(req.query.readyTimeout + '', { min: 1, max: 300000 }) && req.query.readyTimeout) || config.ssh.readyTimeout
 	}
 	if (req.session.ssh.header.name) validator.escape(req.session.ssh.header.name)
 	if (req.session.ssh.header.background) validator.escape(req.session.ssh.header.background)
@@ -117,8 +113,8 @@ app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 	var stats = fs.existsSync(path) && fs.statSync(path);
 	if (stats && stats.isFile()) {
 		res.set({
-			// 'Content-Type': 'application/octet-stream',
-			'Content-Type': 'application/x-download',
+			'Content-Type': 'application/octet-stream',
+			// 'Content-Type': 'application/x-download',
 			'Content-Disposition': 'attachment; filename=' + encodeURIComponent(fileName),
 			'Content-Length': stats.size
 		});

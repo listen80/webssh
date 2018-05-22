@@ -126,7 +126,7 @@ if (document.location.pathname) {
     socket = io.connect()
 }
 
-term.open(terminalContainer)
+term.open(terminalContainer, true)
 term.focus()
 
 resizeScreen()

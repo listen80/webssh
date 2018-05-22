@@ -35,6 +35,7 @@ $('#new').on('click', function(argument) {
 
 // 上传
 var isUploading = false
+
 function postfile(file) {
     if (isUploading) {
         return
@@ -108,7 +109,7 @@ $('#download').on('click', function(e) {
 
 ol.onclick = function(e) {
     var target = e.target
-    if(target.nodeName === 'SPAN') {
+    if (target.nodeName === 'SPAN') {
         var a = document.createElement('a')
         a.href = target.getAttribute('url')
         a.download = ''
@@ -128,7 +129,7 @@ function resizeScreen() {
 }
 
 window.addEventListener('resize', resizeScreen, false)
-window.addEventListener('beforeunload', function() {socket.emit('disconnect')}, false)
+window.addEventListener('beforeunload', function() { socket.emit('disconnect') }, false)
 
 resizeScreen()
 
@@ -170,36 +171,22 @@ socket.on('status', function(data) {
 })
 
 socket.on('ssherror', function(data) {
-    // alert(data)
     console.error(data)
-    errorExists = true
 })
 
 socket.on('headerBackground', function(data) {
-    console.log('headerBackground' ,data)
+    console.log('headerBackground', data)
 })
 
-var allowreplay = false
 socket.on('allowreplay', function(data) {
-    if (data === true) {
-        console.log('allowreplay: ' + data)
-        allowreplay = true
-        // console.log(Credentials)
-    } else {
-        allowreplay = false
-        console.log('allowreplay: ' + data)
-    }
+    console.log('allowreplay: ' + data)
 })
 
 socket.on('disconnect', function(err) {
-    if (!errorExists) {
-        console.log('disconnect')
-    }
+    console.log('disconnect', e)
     socket.io.reconnection(false)
 })
 
 socket.on('error', function(err) {
-    if (!errorExists) {
-        console.log('error')
-    }
+    console.log(err)
 })

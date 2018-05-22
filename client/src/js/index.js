@@ -115,7 +115,7 @@ function resizeScreen() {
     socket.emit('resize', { cols: term.cols, rows: term.rows })
 }
 
-window.on('resize', resizeScreen, false)
+window.addEventListener('resize', resizeScreen, false)
 
 if (document.location.pathname) {
     var parts = document.location.pathname.split('/')

@@ -26,6 +26,7 @@ module.exports = function socket (socket) {
   conn.on('banner', function connOnBanner (data) {
     // need to convert to cr/lf for proper formatting
     data = data.replace(/\r?\n/g, '\r\n')
+    console.log('banner', data)
     socket.emit('data', data.toString('utf-8'))
   })
 

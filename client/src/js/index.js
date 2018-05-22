@@ -111,7 +111,7 @@ document.on('click', function(ev) {
 })
 
 function resizeScreen() {
-    term.fit()
+    // term.fit()
     socket.emit('resize', { cols: term.cols, rows: term.rows })
 }
 

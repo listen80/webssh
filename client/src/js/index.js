@@ -1,6 +1,6 @@
 'use strict'
 
-import * as io from 'socket.io-client'
+// import * as io from 'socket.io-client'
 import * as Terminal from 'xterm/dist/xterm'
 import * as fit from 'xterm/dist/addons/fit/fit'
 

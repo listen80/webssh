@@ -36,7 +36,7 @@ $('#upload').on('click', function(argument) {
     }
     input.click()
 })
-
+var control = $('#control')
 var download = $('#download')
 var terminalContainer = $('#terminal-container')
 
@@ -181,7 +181,8 @@ socket.on('ssherror', function(data) {
 })
 
 socket.on('headerBackground', function(data) {
-    header.style.backgroundColor = data
+    console.log('headerBackground' ,data)
+    // header.style.backgroundColor = data
 })
 
 socket.on('header', function(data) {

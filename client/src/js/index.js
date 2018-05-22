@@ -73,8 +73,6 @@ function postfile(file) {
     term.focus()
 }
 
-
-
 download.on('click', function(e) {
     if (e.target === this) {
         var xhr = new XMLHttpRequest();
@@ -86,13 +84,23 @@ download.on('click', function(e) {
                 var data = JSON.parse(this.responseText || this.response)
                 ol.style.display = 'block'
                 ol.innerHTML = data.dirs.map(function(file) {
-                    return `<li><a href='/file-download/${user}/${path}/${file}'>${file}</a></li>`
+                    return `<li><span url='/file-download/${user}/${path}/${file}'>${file}</span></li>`
                 }).join('')
             }
         }
         xhr.send()
     }
 }, false)
+
+ol.onclick = function(e) {
+    var target = e.target
+    if(target.nodeName === 'SPAN') {
+        var a = document.createElement('a')
+        a.href = target.getAttribute('url')
+        a.download = ''
+        a.click()
+    }
+}
 
 document.on('drop', function(ev) {
     ev.preventDefault();

@@ -12,14 +12,11 @@ body {
     background-color: black;
 }
 
-#info {
+#control {
     position: fixed;
     right: 21px;
     top: 4px;
     z-index: 99999;
-}
-
-#control {
     display: none;
 }
 

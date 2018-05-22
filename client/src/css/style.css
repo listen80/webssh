@@ -1,17 +1,14 @@
 html,
 body {
-    /*font-family: helvetica, sans-serif, arial;*/
     font-size: 1em;
-    /*background-color: rgb(0, 0, 0);*/
-    /*color: rgb(240, 240, 240);*/
     height: 100%;
     margin: 0;
     min-width: 800px;
     min-height: 600px;
 }
 
-#terminal, .terminal, .xterm-viewport {
-    height: 100% !important;
+#terminal {
+    height: 100%;
 }
 
 #info {

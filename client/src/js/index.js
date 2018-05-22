@@ -2,8 +2,15 @@
 
 require('../css/style.css')
 
-var allowreplay = false
+// com func
+var $ = function(q) {
+    return document.querySelector(q)
+}
 
+Node.prototype.on = Node.prototype.addEventListener
+
+
+// socket
 var socket = null
 if (document.location.pathname) {
     var parts = document.location.pathname.split('/')
@@ -14,16 +21,12 @@ if (document.location.pathname) {
     socket = io.connect()
 }
 
+// term
 var term = new Terminal()
 term.open($('#terminal'), true)
 term.focus()
 
-// com func
-var $ = function(q) {
-    return document.querySelector(q)
-}
 
-Node.prototype.on = Node.prototype.addEventListener
 
 // new 按钮
 $('#new').on('click', function(argument) {
@@ -176,6 +179,7 @@ socket.on('headerBackground', function(data) {
     console.log('headerBackground' ,data)
 })
 
+var allowreplay = false
 socket.on('allowreplay', function(data) {
     if (data === true) {
         console.log('allowreplay: ' + data)

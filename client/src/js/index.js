@@ -127,10 +127,10 @@ if (document.location.pathname) {
 }
 
 term.open(terminalContainer)
+term.focus()
 
 resizeScreen()
 
-term.focus()
 
 term.on('data', function(data) {
     // console.warn(data)

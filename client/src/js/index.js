@@ -197,10 +197,6 @@ socket.on('footer', function(data) {
     footer.innerHTML = data
 })
 
-socket.on('statusBackground', function(data) {
-    status.style.backgroundColor = data
-})
-
 socket.on('allowreplay', function(data) {
     if (data === true) {
         // console.log('allowreplay: ' + data)

@@ -10,7 +10,7 @@ body {
     min-height: 600px;
 }
 
-#terminal-container, .terminal, .xterm-viewport {
+#terminal, .terminal, .xterm-viewport {
     height: 100% !important;
 }
 

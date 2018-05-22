@@ -23,6 +23,7 @@ var $ = function(q) {
 var status = $('#status')
 var header = $('#header')
 var footer = $('#footer')
+Node.prototype.on = Node.prototype.addEventListener
 
 $('#upload').on('click', function(argument) {
     if (isUploading) {
@@ -39,7 +40,7 @@ $('#upload').on('click', function(argument) {
 var download = $('#download')
 var terminalContainer = $('#terminal-container')
 
-Node.prototype.on = Node.prototype.addEventListener
+
 
 $('#new').on('click', function(argument) {
     open('./')

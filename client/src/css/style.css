@@ -18,6 +18,7 @@ body {
     top: 4px;
     z-index: 99999;
     display: none;
+    color: white;
 }
 
 #control>span {
@@ -37,32 +38,19 @@ ol {
     position: absolute;
     margin: 0;
     padding: 5px 10px;
-    white-space: nowrap;
-    list-style: none;
     top: 30px;
-    left: 69px;
+    left: 66px;
     background: #57a2ff;
-    color: white;
     display: none;
-    text-align: left;
-    max-width: 157px;
+    max-width: 150px;
     border-radius: 5px;
 }
 
 li {
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-a:active,
-a:visited,
-a:focus {
-    color: white;
+    white-space: nowrap;
+     list-style: none;
 }
 
  ::-webkit-scrollbar {
@@ -72,15 +60,15 @@ a:focus {
 
 ::-webkit-scrollbar-track-piece {
     background-color: #ddd;
-    -webkit-border-radius: 8px;
+    -webkit-border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:vertical {
     background-color: #999;
-    -webkit-border-radius: 8px;
+    -webkit-border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
     background-color: #999;
-    -webkit-border-radius: 8px;
+    -webkit-border-radius: 3px;
 }

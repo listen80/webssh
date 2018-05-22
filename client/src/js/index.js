@@ -7,7 +7,7 @@ import * as fit from 'xterm/dist/addons/fit/fit'
 require('xterm/dist/xterm.css')
 require('../css/style.css')
 
-Terminal.applyAddon(fit)
+// Terminal.applyAddon(fit)
 
 /* global Blob, logBtn, credentialsBtn, downloadLogBtn */
 var sessionLogEnable = false

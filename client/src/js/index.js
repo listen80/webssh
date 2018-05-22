@@ -97,10 +97,13 @@ $('#download').on('click', function(e) {
         xhr.onload = function() {
             if (this.readyState === 4 && this.status === 200) {
                 var data = JSON.parse(this.responseText || this.response)
-                ol.style.display = 'block'
-                ol.innerHTML = data.dirs.map(function(file) {
+                var html = data.dirs.map(function(file) {
                     return `<li><span url='/file-download/${user}/${path}/${file}'>${file}</span></li>`
                 }).join('')
+                if(html) {
+                    ol.style.display = 'block'
+                    ol.innerHTML = html
+                }
             }
         }
         xhr.send()

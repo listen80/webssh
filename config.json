@@ -62,9 +62,9 @@
     ]
   },
   "serverlog": {
-    "client": false,
-    "server": false
+    "client": true,
+    "server": true
   },
-  "accesslog": false,
-  "verify": false
+  "accesslog": true,
+  "verify": true
 }

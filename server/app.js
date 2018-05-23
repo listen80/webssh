@@ -213,6 +213,7 @@ app.use(function(err, req, res, next) {
 // socket.io
 // expose express session with socket.request.session
 io.use(function(socket, next) {
+	console.log(socket)
 	(socket.request.res) ? session(socket.request, socket.request.res, next): next(next)
 })
 

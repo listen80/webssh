@@ -44,13 +44,11 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "webpack --progress --colors --config scripts/webpack.prod.js",
-    "builddev": "webpack --progress --colors --config scripts/webpack.dev.js --mode development",
-    "dev": "webpack --progress --colors --watch --config scripts/webpack.dev.js --mode development",
-    "test": "snyk test",
     "watch": "nodemon index.js",
-    "standard": "standard --verbose | snazzy",
-    "cleanmac": "find . -name '.DS_Store' -type f -delete"
+    "build": "webpack --progress --colors --config scripts/webpack.prod.js",
+    "dev": "webpack --progress --colors --watch --config scripts/webpack.dev.js",
+    "test": "snyk test",
+    "standard": "standard --verbose | snazzy"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
@@ -62,7 +60,6 @@
     "nodemon": "^1.11.0",
     "postcss-discard-comments": "^2.0.4",
     "snazzy": "^7.0.0",
-    "snyk": "^1.39.1",
     "standard": "^11.0.0",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",

@@ -47,7 +47,6 @@
     "watch": "nodemon index.js",
     "build": "webpack --progress --colors --config scripts/webpack.prod.js",
     "dev": "webpack --progress --colors --watch --config scripts/webpack.dev.js",
-    "test": "snyk test",
     "standard": "standard --verbose | snazzy"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -12,10 +12,18 @@ module.exports = {
       root: path.resolve(__dirname, '../'),
       verbose: true
     }),
-    new CopyWebpackPlugin([
-      './client/src/client.htm',
-      './client/src/favicon.ico'
-    ]),
+    new HtmlWebpackPlugin({
+        template: './client/src/client.htm',
+        filename: 'client.htm',
+        favicon: './client/src/favicon.ico',
+        inject: 'body',
+        minify: {
+            "removeAttributeQuotes": true,
+            "removeComments": true,
+            "removeEmptyAttributes": false,
+            "collapseWhitespace": true
+        }
+    }),
     new ExtractTextPlugin('[name].css')
   ],
   output: {
@@ -29,9 +37,6 @@ module.exports = {
     }, {
       test: /\.(png|jpg|gif)$/,
       loader: 'url-loader?limit=10240&name=img/[name].[hash:8].[ext]'
-    }, {
-      test: /\.tpl$/,
-      loader: 'compressed-string-loader'
     }]
   },
   devtool: 'source-map'

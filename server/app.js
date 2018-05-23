@@ -47,8 +47,8 @@ app.use(express.static(publicPath, expressOptions))
 
 app.get('/:host?', function(req, res, next) {
 	res.sendFile(path.join(path.join(publicPath, 'client.htm')))
-	req.params.host = req.params.host || "10.12.239.208"
-	req.query.port = "36000"
+	req.params.host = req.params.host || "127.0.0.1"
+	req.query.port = "22"
 	req.session.ssh = {
 		host: (validator.isIP(req.params.host + '') && req.params.host) ||
 			(validator.isFQDN(req.params.host) && req.params.host) ||

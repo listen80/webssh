@@ -4,7 +4,6 @@
   "ignore": [
     ".gitignore"
   ],
-  "bin": "./index.js",
   "description": "A Websocket to SSH2 gateway using term.js, socket.io, ssh2, and express",
   "homepage": "https://github.com/billchurch/WebSSH2",
   "keywords": "ssh webssh terminal webterminal",
@@ -39,8 +38,8 @@
     "socket.io": "^2.0.4"
   },
   "scripts": {
-    "start": "node index.js",
-    "watch": "nodemon index.js",
+    "start": "node server/app.js",
+    "watch": "nodemon server/app.js",
     "build": "webpack --progress --colors --config build/webpack.prod.js",
     "dev": "webpack --progress --colors --watch --config build/webpack.prod.js",
     "standard": "standard --verbose | snazzy"
@@ -61,7 +60,6 @@
   },
   "standard": {
     "ignore": [
-      "client/webssh2.bundle.js",
       "bigip/*",
       "screenshots/*",
       "bin/*",

@@ -1,8 +1,7 @@
 // app.js
 var path = require('path')
-var nodeRoot = path.dirname(require.main.filename)
-var configPath = path.join(nodeRoot, 'config.json')
-var publicPath = path.join(nodeRoot, 'public')
+var configPath = path.resolve('config.json')
+var publicPath = path.resolve('public')
 var config = require('read-config')(configPath)
 var express = require('express')
 var logger = require('morgan')
@@ -217,4 +216,18 @@ io.use(function(socket, next) {
 // bring up socket
 io.on('connection', socket)
 
-module.exports = { server: server, config: config }
+server.listen({ host: config.listen.ip, port: config.listen.port })
+
+console.log('WebSSH2 service listening on ' + config.listen.ip + ':' + config.listen.port)
+
+server.on('error', function (err) {
+  if (err.code === 'EADDRINUSE') {
+    config.listen.port++
+    console.warn('WebSSH2 Address in use, retrying on port ' + config.listen.port)
+    setTimeout(function () {
+      server.listen(config.listen.port)
+    }, 250)
+  } else {
+    console.log('WebSSH2 server.listen ERROR: ' + err.code)
+  }
+})

@@ -139,7 +139,7 @@ module.exports = function socket(socket) {
    */
   function SSHerror(myFunc, err) {
     if (err) {
-      console.log('WebSSH2 error' + err)
+      console.log('WebSSH2 error' + err.stack || err)
     }
     socket.emit('ssherror', 'SSH ' + myFunc + err)
     // socket.request.session.destroy()

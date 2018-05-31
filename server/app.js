@@ -49,27 +49,19 @@ app.get('/', function(req, res, next) {
 })
 
 app.post('/', function(req, res, next) {
-    req.params.host = req.params.host || "118.24.162.201"
-    req.query.port = "22"
+    req.params.host = req.params.host || "127.0.0.1"
     req.session.username=  'root'
     req.session.userpassword = 'lijiabin'
     req.session.ssh = {
         host: (validator.isIP(req.params.host + '') && req.params.host) ||
-            (validator.isFQDN(req.params.host) && req.params.host) ||
-            (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.params.host) && req.params.host) || config.ssh.host,
+               (validator.isFQDN(req.params.host) && req.params.host) ||
+               (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.params.host) && req.params.host) || config.ssh.host,
 
         port: (validator.isInt(req.query.port + '', { min: 1, max: 65535 }) && req.query.port) || config.ssh.port,
         algorithms: config.algorithms,
         keepaliveInterval: config.ssh.keepaliveInterval,
         keepaliveCountMax: config.ssh.keepaliveCountMax,
         term: (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.query.sshterm) && req.query.sshterm) || config.ssh.term,
-        // terminal: {
-        //     // cursorBlink: (validator.isBoolean(req.query.cursorBlink + '') ? myutil.parseBool(req.query.cursorBlink) : config.terminal.cursorBlink),
-        //     scrollback: (validator.isInt(req.query.scrollback + '', { min: 1, max: 200000 }) && req.query.scrollback) ? req.query.scrollback : config.terminal.scrollback,
-        //     tabStopWidth: (validator.isInt(req.query.tabStopWidth + '', { min: 1, max: 100 }) && req.query.tabStopWidth) ? req.query.tabStopWidth : config.terminal.tabStopWidth,
-        //     bellStyle: ((req.query.bellStyle) && (['sound', 'none'].indexOf(req.query.bellStyle) > -1)) ? req.query.bellStyle : config.terminal.bellStyle
-        // },
-        // allowreplay: (validator.isBoolean(req.headers.allowreplay + '') ? myutil.parseBool(req.headers.allowreplay) : false),
         mrhsession: ((validator.isAlphanumeric(req.headers.mrhsession + '') && req.headers.mrhsession) ? req.headers.mrhsession : 'none'),
         serverlog: {
             client: config.serverlog.client || false,
@@ -77,7 +69,7 @@ app.post('/', function(req, res, next) {
         },
         readyTimeout: (validator.isInt(req.query.readyTimeout + '', { min: 1, max: 300000 }) && req.query.readyTimeout) || config.ssh.readyTimeout
     }
-    res.send('error path')
+    res.send('ok')
 })
 
 var fs = require('fs');

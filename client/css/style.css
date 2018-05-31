@@ -71,3 +71,11 @@ li span {
     background-color: #999;
     -webkit-border-radius: 3px;
 }
+
+#login {
+    position: fixed;
+    left: 200px;
+    top: 200px;
+    background-color: white;
+    padding: 20px;
+}

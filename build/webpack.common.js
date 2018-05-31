@@ -5,17 +5,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    webssh2: './client/src/js/index.js'
+    webssh2: './client/js/index.js'
   },
   plugins: [
-    new CleanWebpackPlugin(['client/public'], {
+    new CleanWebpackPlugin(['public'], {
       root: path.resolve(__dirname, '../'),
       verbose: true
     }),
     new HtmlWebpackPlugin({
-        template: './client/src/client.htm',
+        template: './client/client.htm',
         filename: 'client.htm',
-        favicon: './client/src/favicon.ico',
+        favicon: './client/favicon.ico',
         inject: 'body',
         minify: {
             "removeAttributeQuotes": true,
@@ -24,11 +24,11 @@ module.exports = {
             "collapseWhitespace": true
         }
     }),
-    new ExtractTextPlugin('[name].css')
+    new ExtractTextPlugin('[name].[contenthash:8].css')
   ],
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, '../client/public')
+    filename: '[name].[hash:8].bundle.js',
+    path: path.resolve(__dirname, '../public')
   },
   module: {
     loaders: [{

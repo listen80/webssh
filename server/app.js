@@ -1,11 +1,8 @@
 // app.js
-
 var path = require('path')
-// configPath = path.join(__dirname, 'config.json')
 var nodeRoot = path.dirname(require.main.filename)
 var configPath = path.join(nodeRoot, 'config.json')
-var publicPath = path.join(nodeRoot, 'client', 'public')
-console.log('WebSSH2 service reading config from: ' + configPath)
+var publicPath = path.join(nodeRoot, 'public')
 var config = require('read-config')(configPath)
 var express = require('express')
 var logger = require('morgan')
@@ -19,7 +16,6 @@ var session = require('express-session')({
 var app = express()
 var compression = require('compression')
 var server = require('http').Server(app)
-var myutil = require('./util')
 var validator = require('validator')
 var io = require('socket.io')(server, { serveClient: false })
 var socket = require('./socket')
@@ -38,7 +34,7 @@ var expressOptions = {
 // express
 app.use(compression({ level: 9 }))
 app.use(session)
-// app.use(myutil.basicAuth)
+
 if (config.accesslog) {
     app.use(logger('common'))
 }
@@ -49,32 +45,31 @@ app.disable('x-powered-by')
 app.use(express.static(publicPath, expressOptions))
 
 app.get('/', function(req, res, next) {
-    res.sendFile(path.join(path.join(publicPath, 'client.htm')))
-    req.params.host = req.params.host || "127.0.0.1"
+    res.sendFile(path.join(publicPath, 'client.htm'))
+})
+
+app.post('/', function(req, res, next) {
+    req.params.host = req.params.host || "118.24.162.201"
     req.query.port = "22"
-    req.session.username=  'sss'
+    req.session.username=  'root'
+    req.session.userpassword = 'lijiabin'
     req.session.ssh = {
         host: (validator.isIP(req.params.host + '') && req.params.host) ||
             (validator.isFQDN(req.params.host) && req.params.host) ||
-            (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.params.host) &&
-                req.params.host) || config.ssh.host,
+            (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.params.host) && req.params.host) || config.ssh.host,
 
         port: (validator.isInt(req.query.port + '', { min: 1, max: 65535 }) && req.query.port) || config.ssh.port,
-        header: {
-            name: req.query.header || config.header.text,
-            background: req.query.headerBackground || config.header.background
-        },
         algorithms: config.algorithms,
         keepaliveInterval: config.ssh.keepaliveInterval,
         keepaliveCountMax: config.ssh.keepaliveCountMax,
         term: (/^(([a-z]|[A-Z]|[0-9]|[!^(){}\-_~])+)?\w$/.test(req.query.sshterm) && req.query.sshterm) || config.ssh.term,
-        terminal: {
-            cursorBlink: (validator.isBoolean(req.query.cursorBlink + '') ? myutil.parseBool(req.query.cursorBlink) : config.terminal.cursorBlink),
-            scrollback: (validator.isInt(req.query.scrollback + '', { min: 1, max: 200000 }) && req.query.scrollback) ? req.query.scrollback : config.terminal.scrollback,
-            tabStopWidth: (validator.isInt(req.query.tabStopWidth + '', { min: 1, max: 100 }) && req.query.tabStopWidth) ? req.query.tabStopWidth : config.terminal.tabStopWidth,
-            bellStyle: ((req.query.bellStyle) && (['sound', 'none'].indexOf(req.query.bellStyle) > -1)) ? req.query.bellStyle : config.terminal.bellStyle
-        },
-        allowreplay: (validator.isBoolean(req.headers.allowreplay + '') ? myutil.parseBool(req.headers.allowreplay) : false),
+        // terminal: {
+        //     // cursorBlink: (validator.isBoolean(req.query.cursorBlink + '') ? myutil.parseBool(req.query.cursorBlink) : config.terminal.cursorBlink),
+        //     scrollback: (validator.isInt(req.query.scrollback + '', { min: 1, max: 200000 }) && req.query.scrollback) ? req.query.scrollback : config.terminal.scrollback,
+        //     tabStopWidth: (validator.isInt(req.query.tabStopWidth + '', { min: 1, max: 100 }) && req.query.tabStopWidth) ? req.query.tabStopWidth : config.terminal.tabStopWidth,
+        //     bellStyle: ((req.query.bellStyle) && (['sound', 'none'].indexOf(req.query.bellStyle) > -1)) ? req.query.bellStyle : config.terminal.bellStyle
+        // },
+        // allowreplay: (validator.isBoolean(req.headers.allowreplay + '') ? myutil.parseBool(req.headers.allowreplay) : false),
         mrhsession: ((validator.isAlphanumeric(req.headers.mrhsession + '') && req.headers.mrhsession) ? req.headers.mrhsession : 'none'),
         serverlog: {
             client: config.serverlog.client || false,
@@ -82,6 +77,7 @@ app.get('/', function(req, res, next) {
         },
         readyTimeout: (validator.isInt(req.query.readyTimeout + '', { min: 1, max: 300000 }) && req.query.readyTimeout) || config.ssh.readyTimeout
     }
+    res.send('error path')
 })
 
 var fs = require('fs');

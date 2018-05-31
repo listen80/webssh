@@ -9,14 +9,6 @@ var $ = function(q) {
 
 Node.prototype.on = Node.prototype.addEventListener
 
-
-// socket
-
-// term
-var term = new Terminal()
-term.open($('#terminal'), true)
-term.focus()
-
 // 上传
 var isUploading = false
 
@@ -110,28 +102,56 @@ document.on('click', function(ev) {
 })
 
 
+submit.on('click', function(argument) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', "/", true);
+    xhr.onload = function(e) {
+        start()
+    }
+    xhr.onerror = function(e) {
+        alert('error')
+    }
+    xhr.send();
+})
 
+function start() {
+    var terminal = $('#terminal')
+    var term = new Terminal({
+        "cursorBlink": true,
+        "scrollback": 10000,
+        "tabStopWidth": 8,
+        "bellStyle": "sound"
+    })
+    term.open(terminal, true)
+    term.focus()
+    term.fit()
 
-
-window.x = function() {
-
+    var socket = io.connect(null, { resource: location.pathname.replace(/[^/]*$/, '') + 'socket.io' })
     // onresize
+
     function resizeScreen() {
         term.fit()
         socket.emit('resize', { cols: term.cols, rows: term.rows })
     }
 
-    var socket = io.connect(null, { resource: location.pathname.replace(/[^/]*$/, '') + 'socket.io' })
+    function disconnect() {
+        socket.emit('disconnect')
+    }
 
-    window.addEventListener('beforeunload', function() { socket.emit('disconnect') }, false)
+    function error() {
+        login.style.display = 'block'
+        while(terminal.firstChild) {
+            terminal.removeChild(terminal.firstChild)
+        }
+        window.removeEventListener('beforeunload', disconnect, false)
+        window.removeEventListener('resize', resizeScreen, false)
+    }
 
+    window.addEventListener('beforeunload', disconnect, false)
     window.addEventListener('resize', resizeScreen, false)
-    
-    resizeScreen()
 
     // io
     term.on('data', function(data) {
-        // console.warn(data)
         socket.emit('data', data)
     })
 
@@ -145,45 +165,26 @@ window.x = function() {
 
     socket.on('connect', function() {
         socket.emit('geometry', term.cols, term.rows)
-    })
-
-    socket.on('setTerminalOpts', function(data) {
-        term.setOption('cursorBlink', data.cursorBlink)
-        term.setOption('scrollback', data.scrollback)
-        term.setOption('tabStopWidth', data.tabStopWidth)
-        // term.setOption('bellStyle', data.bellStyle)
+        login.style.display = 'none'
     })
 
     socket.on('title', function(data) {
         document.title = data
     })
 
-    socket.on('menu', function(data) {
-        console.log(data)
-    })
-
-    socket.on('status', function(data) {
-        console.log('status', data)
-    })
-
     socket.on('ssherror', function(data) {
         console.error(data)
-    })
-
-    socket.on('headerBackground', function(data) {
-        console.log('headerBackground', data)
-    })
-
-    socket.on('allowreplay', function(data) {
-        console.log('allowreplay: ' + data)
+        error()
     })
 
     socket.on('disconnect', function(err) {
         console.log('disconnect', err)
         socket.io.reconnection(false)
+        error()
     })
 
     socket.on('error', function(err) {
         console.log(err)
+        error()
     })
 }

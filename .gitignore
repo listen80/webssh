@@ -52,7 +52,7 @@ jspm_packages
 
 
 v8-compile*
-/client/public
+/public
 
 /webhook*
 /package-lock.json

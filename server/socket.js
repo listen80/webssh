@@ -138,15 +138,13 @@ module.exports = function socket(socket) {
    * @param {object} err    error object or error message
    */
   function SSHerror(myFunc, err) {
-    var theError
     if (err) {
-      theError = (err) ? ': ' + err.message : ''
-      console.log('WebSSH2 error' + theError)
+      console.log('WebSSH2 error' + err)
     }
-    socket.emit('ssherror', 'SSH ' + myFunc + theError)
+    socket.emit('ssherror', 'SSH ' + myFunc + err)
     // socket.request.session.destroy()
     socket.disconnect(true)
 
-    debugWebSSH2('SSHerror ' + myFunc + theError)
+    debugWebSSH2('SSHerror ' + myFunc + err)
   }
 }

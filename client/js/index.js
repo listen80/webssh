@@ -101,7 +101,6 @@ document.on('click', function(ev) {
     ol.style.display = 'none'
 })
 
-
 submit.on('click', function(argument) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', "/", true);
@@ -114,9 +113,10 @@ submit.on('click', function(argument) {
     xhr.send();
 })
 
+var term
 function start() {
     var terminal = $('#terminal')
-    var term = new Terminal({
+    term = new Terminal({
         "cursorBlink": true,
         "scrollback": 10000,
         "tabStopWidth": 8,
@@ -143,6 +143,7 @@ function start() {
         while(terminal.firstChild) {
             terminal.removeChild(terminal.firstChild)
         }
+        control.style.display = 'none'
         window.removeEventListener('beforeunload', disconnect, false)
         window.removeEventListener('resize', resizeScreen, false)
     }
@@ -166,6 +167,7 @@ function start() {
     socket.on('connect', function() {
         socket.emit('geometry', term.cols, term.rows)
         login.style.display = 'none'
+        control.style.display = 'block'
     })
 
     socket.on('title', function(data) {

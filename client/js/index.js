@@ -7,7 +7,7 @@ var $ = function(q) {
     return document.querySelector(q)
 }
 
-Node.prototype.on = Node.prototype.addEventListener
+window.Node.prototype.on = Node.prototype.addEventListener
 
 // 上传
 var isUploading = false

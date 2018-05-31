@@ -17,16 +17,9 @@
     "tabStopWidth": 8,
     "bellStyle": "sound"
   },
-  "header": {
-    "text": null,
-    "background": "green"
-  },
   "session": {
     "name": "WebSSH2",
     "secret": "mysecret"
-  },
-  "options": {
-    "challengeButton": true
   },
   "algorithms": {
     "kex": [

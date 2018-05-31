@@ -41,8 +41,7 @@
     "start": "node server/app.js",
     "watch": "nodemon server/app.js",
     "build": "webpack --progress --colors --config build/webpack.prod.js",
-    "dev": "webpack --progress --colors --watch --config build/webpack.prod.js",
-    "standard": "standard --verbose | snazzy"
+    "dev": "webpack --progress --colors --watch --config build/webpack.prod.js"
   },
   "devDependencies": {
     "html-webpack-plugin": "^2.30.1",
@@ -51,8 +50,6 @@
     "extract-text-webpack-plugin": "^1.0.0",
     "file-loader": "^1.1.6",
     "nodemon": "^1.11.0",
-    "snazzy": "^7.0.0",
-    "standard": "^11.0.0",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "webpack": "^1.12.15",

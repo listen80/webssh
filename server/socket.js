@@ -11,6 +11,7 @@ var termCols, termRows
 // public
 module.exports = function socket (socket) {
   // if websocket connection arrives without an express session, kill it
+
   if (!socket.request.session) {
     socket.emit('401 UNAUTHORIZED')
     debugWebSSH2('SOCKET: No Express Session / REJECTED')
@@ -50,7 +51,9 @@ module.exports = function socket (socket) {
         return
       }
       // poc to log commands from client
-      if (socket.request.session.ssh.serverlog.client) var dataBuffer
+      if (socket.request.session.ssh.serverlog.client) {
+        var dataBuffer
+      }
       socket.on('data', function socketOnData (data) {
         stream.write(data)
         // poc to log commands from client
@@ -103,30 +106,46 @@ module.exports = function socket (socket) {
   })
 
   conn.on('end', function connOnEnd (err) { SSHerror('CONN END BY HOST', err) })
-  conn.on('close', function connOnClose (err) { SSHerror('CONN CLOSE', err) })
-  conn.on('error', function connOnError (err) { SSHerror('CONN ERROR', err) })
+  conn.on('close', function connOnClose (err) {
+    console.log('CONN CLOSE') 
+    // SSHerror('CONN CLOSE', err)
+   })
+  conn.on('error', function connOnError (err) { 
+    console.log('CONN ERROR')
+    SSHerror('CONN ERROR', err) 
+  })
+  conn.on('timeout', function timeout (err) { 
+    console.log('timeout ERROR')
+    SSHerror('timeout ERROR', err) 
+  })
   conn.on('keyboard-interactive', function connOnKeyboardInteractive (name, instructions, instructionsLang, prompts, finish) {
     debugWebSSH2('conn.on(\'keyboard-interactive\')')
     finish([socket.request.session.userpassword])
   })
   if (socket.request.session.username && socket.request.session.userpassword && socket.request.session.ssh) {
     // console.log('hostkeys: ' + hostkeys[0].[0])
-    conn.connect({
-      host: socket.request.session.ssh.host,
-      port: socket.request.session.ssh.port,
-      username: socket.request.session.username,
-      password: socket.request.session.userpassword,
-      tryKeyboard: true,
-      algorithms: socket.request.session.ssh.algorithms,
-      readyTimeout: socket.request.session.ssh.readyTimeout,
-      keepaliveInterval: socket.request.session.ssh.keepaliveInterval,
-      keepaliveCountMax: socket.request.session.ssh.keepaliveCountMax,
-      debug: debug('ssh2')
-    })
+    try {
+      conn.connect({
+        host: socket.request.session.ssh.host,
+        port: socket.request.session.ssh.port,
+        username: socket.request.session.username || 'asdsad',
+        password: socket.request.session.userpassword,
+        tryKeyboard: true,
+        algorithms: socket.request.session.ssh.algorithms,
+        readyTimeout: socket.request.session.ssh.readyTimeout,
+        keepaliveInterval: socket.request.session.ssh.keepaliveInterval,
+        keepaliveCountMax: socket.request.session.ssh.keepaliveCountMax,
+        debug: debug('ssh2')
+      })
+    } catch(e) {
+      socket.disconnect(true)
+    }
+    
   } else {
     debugWebSSH2('Attempt to connect without session.username/password or session varialbles defined, potentially previously abandoned client session. disconnecting websocket client.\r\nHandshake information: \r\n  ' + JSON.stringify(socket.handshake))
+
     socket.emit('ssherror', 'WEBSOCKET ERROR - Refresh the browser and try again')
-    socket.request.session.destroy()
+    // socket.request.session.destroy()
     socket.disconnect(true)
   }
 
@@ -137,8 +156,8 @@ module.exports = function socket (socket) {
   * @param {object} err    error object or error message
   */
   function SSHerror (myFunc, err) {
+    console.log(socket.request._query)
     var theError
-    if (socket.request.session) {
       // we just want the first error of the session to pass to the client
       socket.request.session.error = (socket.request.session.error) || ((err) ? err.message : undefined)
       theError = (socket.request.session.error) ? ': ' + socket.request.session.error : ''
@@ -148,19 +167,22 @@ module.exports = function socket (socket) {
           ' user=' + socket.request.session.username.yellow.bold.underline +
           ' from=' + socket.handshake.address.yellow.bold.underline)
       } else {
-        console.log('WebSSH2 Logout: user=' + socket.request.session.username + ' from=' + socket.handshake.address + ' host=' + socket.request.session.ssh.host + ' port=' + socket.request.session.ssh.port + ' sessionID=' + socket.request.sessionID + '/' + socket.id + ' allowreplay=' + socket.request.session.ssh.allowreplay + ' term=' + socket.request.session.ssh.term)
+        console.log('WebSSH2 Logout: user=' + socket.request.session.username + 
+          ' from=' + socket.handshake.address + 
+          ' host=' + socket.request.session.ssh.host + 
+          ' port=' + socket.request.session.ssh.port + 
+          ' sessionID=' + socket.request.sessionID + 
+          '/' + socket.id + 
+          ' allowreplay=' + socket.request.session.ssh.allowreplay + ' term=' + socket.request.session.ssh.term)
         if (err) {
           theError = (err) ? ': ' + err.message : ''
           console.log('WebSSH2 error' + theError)
         }
       }
       socket.emit('ssherror', 'SSH ' + myFunc + theError)
-      socket.request.session.destroy()
+      // socket.request.session.destroy()
       socket.disconnect(true)
-    } else {
-      theError = (err) ? ': ' + err.message : ''
-      socket.disconnect(true)
-    }
+    
     debugWebSSH2('SSHerror ' + myFunc + theError)
   }
 }

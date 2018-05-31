@@ -18,6 +18,7 @@ body {
     top: 6px;
     z-index: 99999;
     color: white;
+    display: none;
 }
 
 #control>span {

@@ -14,15 +14,17 @@
         <ol id="ol"></ol>
     </div>
     <div id="login">
-        <div class="auth-form-header">
-            <h1>Login in to WebSSH</h1>
-        </div>
-        <div class="auth-form-body">
-            <label for="login_field">Username</label>
-            <input type="text" id="username" class="margin-18" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus">
-            <label for="password">Password</label>
-            <input type="password" id="password" class="margin-18" tabindex="2">
-            <input type="button" value="Login" tabindex="3" id="submit">
+        <div class="auth-form-wrap">
+            <div class="auth-form-header">
+                <h1>Login in WebSSH</h1>
+            </div>
+            <div class="auth-form-body">
+                <label for="login_field">Username</label>
+                <input type="text" id="username" class="margin-18" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="margin-18" tabindex="2">
+                <input type="button" value="Login" tabindex="3" id="submit">
+            </div>
         </div>
     </div>
     <script src="//cdn.bootcss.com/socket.io/2.1.0/socket.io.js"></script>

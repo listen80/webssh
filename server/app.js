@@ -49,8 +49,8 @@ app.get('/', function(req, res, next) {
 
 app.post('/', function(req, res, next) {
     req.params.host = req.params.host || "127.0.0.1"
-    req.session.username=  'root'
-    req.session.userpassword = 'lijiabin'
+    req.session.username=  req.query.username
+    req.session.userpassword = req.query.password
     req.session.ssh = {
         host: (validator.isIP(req.params.host + '') && req.params.host) ||
                (validator.isFQDN(req.params.host) && req.params.host) ||
@@ -152,7 +152,6 @@ app.get('/get-dir/:user/:path', function(req, res, next) {
         next()
     }
 })
-
 
 app.post('/file-upload/:user/:path', function(req, res) {
     // 获得文件的临时路径

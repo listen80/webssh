@@ -81,9 +81,7 @@ li span {
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: white;
-    padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #000;
 }
 
 #control,
@@ -117,18 +115,22 @@ input {
 .margin-18 {
     margin-bottom: 18px;
 }
-
+.auth-form-wrap {
+    border: 10px solid #d8dee2;
+    width: 300px;
+    margin: 80px auto 0;
+    background-color: #fff;
+    border-radius: 6px;
+}
 .auth-form-header {
     text-align: center;
+    padding: 1px;
 }
 
 .auth-form-body {
     padding: 20px;
     font-size: 14px;
-    background-color: #fff;
-    border: 1px solid #d8dee2;
-    border-radius: 0 0 3px 3px;
-    width: 300px;
+    border-top: 1px solid #d8dee2;
     margin: auto;
 }
 

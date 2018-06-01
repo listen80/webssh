@@ -40,7 +40,7 @@ module.exports = function socket(socket) {
             // console.log('serverlog.client: ' + socket.request.session.id + '/' + socket.id + ' host: ' + socket.request.session.ssh.host + ' command: ' + dataBuffer)
             dataBuffer = ''
           } else {
-            dataBuffer = (dataBuffer) ? dataBuffer + data : data
+            dataBuffer += data
           }
         }
       })
@@ -51,7 +51,7 @@ module.exports = function socket(socket) {
         stream.setWindow(data.rows, data.cols)
       })
       socket.on('disconnecting', function socketOnDisconnecting(reason) { 
-        console.log('SOCKET DISCONNECTING: ' + reason) 
+        console.log('SOCKET DISCONNECTING', reason) 
       })
       socket.on('disconnect', function socketOnDisconnect(reason) {
         SSHerror('CLIENT SOCKET DISCONNECT', reason)
@@ -69,7 +69,7 @@ module.exports = function socket(socket) {
         conn.end()
       })
       stream.stderr.on('data', function streamStderrOnData(data) {
-        console.log('STDERR: ' + data)
+        console.log('STDERR', data)
       })
     })
   })

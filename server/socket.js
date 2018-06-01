@@ -25,7 +25,8 @@ module.exports = function socket(socket) {
   conn.on('ready', function connOnReady() {
     conn.shell({term: socket.request.session.ssh.term, cols: termCols, rows: termRows }, function connShell(err, stream) {
       if (err) {
-        SSHerror('EXEC ERROR' + err)
+        console.log('EXEC ERROR' + err)
+        SSHerror()
         conn.end()
         return
       }
@@ -54,12 +55,14 @@ module.exports = function socket(socket) {
         console.log('SOCKET DISCONNECTING', reason) 
       })
       socket.on('disconnect', function socketOnDisconnect(reason) {
-        SSHerror('CLIENT SOCKET DISCONNECT', reason)
+        console.log('CLIENT SOCKET DISCONNECT', reason)
         conn.end()
+        SSHerror()
       })
       socket.on('error', function socketOnError(err) {
-        SSHerror('SOCKET ERROR', err)
+        console.log('SOCKET ERROR', err)
         conn.end()
+        SSHerror()
       })
       stream.on('data', function streamOnData(data) { 
         socket.emit('data', data.toString('utf-8')) 
@@ -74,18 +77,19 @@ module.exports = function socket(socket) {
     })
   })
   conn.on('end', function connOnEnd(err) { 
-    SSHerror('CONN END BY HOST', err) 
+    console.log('CONN END BY HOST', err) 
+    SSHerror()
   })
   conn.on('close', function connOnClose(err) {
     console.log('CONN CLOSE')
   })
   conn.on('error', function connOnError(err) {
-    console.log('CONN ERROR')
-    SSHerror('CONN ERROR', err)
+    console.log('CONN ERROR', err)
+    SSHerror()
   })
   conn.on('timeout', function timeout(err) {
-    console.log('timeout ERROR')
-    SSHerror('timeout ERROR', err)
+    console.log('timeout ERROR', err)
+    SSHerror()
   })
   conn.on('keyboard-interactive', function connOnKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
     finish([socket.request.session.userpassword])
@@ -111,12 +115,8 @@ module.exports = function socket(socket) {
     socket.disconnect(true)
   }
 
-  function SSHerror(myFunc, err) {
-    if (err) {
-      console.log('WebSSH2 error')
-      console.log(myFunc, err, '\n\n')
-    }
-    socket.emit('ssherror', 'SSH ' + myFunc + err)
+  function SSHerror() {
+    socket.emit('ssherror', 'ssherror')
     socket.disconnect(true)
   }
 }

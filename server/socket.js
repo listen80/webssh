@@ -9,20 +9,17 @@ module.exports = function socket(socket) {
     return
   }
   var conn = new SSH()
-  socket.on('connect', function() {
-      console.log('socket connect')
-  })
+
   socket.on('geometry', function socketOnGeometry(cols, rows) {
     termCols = cols
     termRows = rows
   })
   conn.on('banner', function connOnBanner(data) {
-    // need to convert to cr/lf for proper formatting
     data = data.replace(/\r?\n/g, '\r\n')
     socket.emit('data', data.toString('utf-8'))
   })
-
   conn.on('ready', function connOnReady() {
+
     conn.shell({term: socket.request.session.ssh.term, cols: termCols, rows: termRows }, function connShell(err, stream) {
       if (err) {
         console.log('EXEC ERROR' + err)

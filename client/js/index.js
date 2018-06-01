@@ -104,16 +104,20 @@ document.on('click', function(ev) {
 submit.on('click', function(argument) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', "/", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onload = function(e) {
         start()
     }
     xhr.onerror = function(e) {
         alert('error')
     }
-    xhr.send();
+    var username = $('#username').value
+    var password = $('#password').value
+    xhr.send("username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password));
 })
 
 var term
+
 function start() {
     var terminal = $('#terminal')
     term = new Terminal({
@@ -127,7 +131,6 @@ function start() {
     term.fit()
 
     var socket = io.connect(null, { resource: location.pathname.replace(/[^/]*$/, '') + 'socket.io' })
-    // onresize
 
     function resizeScreen() {
         term.fit()
@@ -140,7 +143,7 @@ function start() {
 
     function error() {
         login.style.display = 'block'
-        while(terminal.firstChild) {
+        while (terminal.firstChild) {
             terminal.removeChild(terminal.firstChild)
         }
         control.style.display = 'none'

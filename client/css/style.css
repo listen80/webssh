@@ -76,12 +76,65 @@ li span {
 
 #login {
     position: fixed;
-    left: 200px;
-    top: 200px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     background-color: white;
     padding: 20px;
+    background-color: #f9f9f9;
 }
 
-#control, #login {
+#control,
+#login {
     font-family: Arial;
+}
+
+label {
+    margin-bottom: 7px;
+}
+
+label,
+input {
+    display: block;
+    width: 100%;
+}
+
+input {
+    padding: 6px 8px;
+    font-size: 16px;
+    line-height: 20px;
+    box-sizing: border-box;
+    color: #24292e;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075);
+}
+.margin-18 {
+    margin-bottom: 18px;
+}
+
+.auth-form-header {
+    text-align: center;
+}
+
+.auth-form-body {
+    padding: 20px;
+    font-size: 14px;
+    background-color: #fff;
+    border: 1px solid #d8dee2;
+    border-radius: 0 0 3px 3px;
+    width: 300px;
+    margin: auto;
+}
+
+#submit {
+    color: #fff;
+    background-color: #28a745;
+    background-image: linear-gradient(-180deg, #34d058 0%, #28a745 100%);
+    cursor: pointer;
 }

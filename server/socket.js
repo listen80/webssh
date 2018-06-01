@@ -65,8 +65,7 @@ module.exports = function socket(socket) {
         socket.emit('data', data.toString('utf-8')) 
       })
       stream.on('close', function streamOnClose(code, signal) {
-        err = { message: ((code || signal) ? (((code) ? 'CODE: ' + code : '') + ((code && signal) ? ' ' : '') + ((signal) ? 'SIGNAL: ' + signal : '')) : undefined) }
-        SSHerror('STREAM CLOSE', err)
+        console.log('STREAM CLOSE',code, signal)
         conn.end()
       })
       stream.stderr.on('data', function streamStderrOnData(data) {

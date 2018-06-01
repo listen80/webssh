@@ -23,7 +23,6 @@ module.exports = function socket(socket) {
   })
 
   conn.on('ready', function connOnReady() {
-    socket.emit('sshok', 'success')
     conn.shell({term: socket.request.session.ssh.term, cols: termCols, rows: termRows }, function connShell(err, stream) {
       if (err) {
         SSHerror('EXEC ERROR' + err)
@@ -31,6 +30,7 @@ module.exports = function socket(socket) {
         return
       }
 
+      socket.emit('sshok', 'success')
       var dataBuffer = ''
       socket.on('data', function socketOnData(data) {
         stream.write(data)
@@ -65,7 +65,7 @@ module.exports = function socket(socket) {
         socket.emit('data', data.toString('utf-8')) 
       })
       stream.on('close', function streamOnClose(code, signal) {
-        console.log('STREAM CLOSE',code, signal)
+        console.log('STREAM CLOSE')
         conn.end()
       })
       stream.stderr.on('data', function streamStderrOnData(data) {
@@ -114,7 +114,7 @@ module.exports = function socket(socket) {
   function SSHerror(myFunc, err) {
     if (err) {
       console.log('WebSSH2 error')
-      console.log(err)
+      console.log(myFunc, err, '\n\n')
     }
     socket.emit('ssherror', 'SSH ' + myFunc + err)
     socket.disconnect(true)

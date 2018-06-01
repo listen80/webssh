@@ -112,7 +112,6 @@ submit.on('click', function(argument) {
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onload = function(e) {
         start()
-        submitStatus = false
     }
     xhr.onerror = function(e) {
         submitStatus = false
@@ -148,6 +147,7 @@ function start() {
     }
 
     function error() {
+        submitStatus = false
         login.style.display = 'block'
         while (terminal.firstChild) {
             terminal.removeChild(terminal.firstChild)

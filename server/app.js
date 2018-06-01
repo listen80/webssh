@@ -33,7 +33,6 @@ var expressOptions = {
 // express
 app.use(compression({ level: 9 }))
 app.use(session)
-
 if (config.accesslog) {
     app.use(logger('common'))
 }
@@ -43,14 +42,22 @@ app.disable('x-powered-by')
 // static files
 app.use(express.static(publicPath, expressOptions))
 
+
 app.get('/', function(req, res, next) {
     res.sendFile(path.join(publicPath, 'client.htm'))
 })
 
+
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.post('/', function(req, res, next) {
+
     req.params.host = req.params.host || "127.0.0.1"
-    req.session.username=  req.query.username
-    req.session.userpassword = req.query.password
+    req.session.username=  req.body.username
+    req.session.userpassword = req.body.password
     req.session.ssh = {
         host: (validator.isIP(req.params.host + '') && req.params.host) ||
                (validator.isFQDN(req.params.host) && req.params.host) ||

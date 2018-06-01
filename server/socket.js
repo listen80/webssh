@@ -1,19 +1,17 @@
-var debug = require('debug')
-var debugWebSSH2 = require('debug')('WebSSH2')
 var SSH = require('ssh2').Client
-
 // public
 module.exports = function socket(socket) {
   // if websocket connection arrives without an express session, kill it
   var termCols, termRows
   if (!socket.request.session) {
     socket.emit('401 UNAUTHORIZED')
-    debugWebSSH2('SOCKET: No Express Session / REJECTED')
     socket.disconnect(true)
     return
   }
   var conn = new SSH()
-  // socket.on('')
+  socket.on('connect', function() {
+      console.log('socket connect')
+  })
   socket.on('geometry', function socketOnGeometry(cols, rows) {
     termCols = cols
     termRows = rows
@@ -25,11 +23,8 @@ module.exports = function socket(socket) {
   })
 
   conn.on('ready', function connOnReady() {
-    conn.shell({
-      term: socket.request.session.ssh.term,
-      cols: termCols,
-      rows: termRows
-    }, function connShell(err, stream) {
+    socket.emit('sshok', 'success')
+    conn.shell({term: socket.request.session.ssh.term, cols: termCols, rows: termRows }, function connShell(err, stream) {
       if (err) {
         SSHerror('EXEC ERROR' + err)
         conn.end()
@@ -50,22 +45,15 @@ module.exports = function socket(socket) {
         }
       })
       socket.on('control', function socketOnControl(controlData) {
-        switch (controlData) {
-          case 'replayCredentials':
-            if (socket.request.session.ssh.allowreplay) {
-              stream.write(socket.request.session.userpassword + '\n')
-            }
-            /* falls through */
-          default:
-            console.log('controlData: ' + controlData)
-        }
+        console.log('control', controlData)
       })
       socket.on('resize', function socketOnResize(data) {
         stream.setWindow(data.rows, data.cols)
       })
-      socket.on('disconnecting', function socketOnDisconnecting(reason) { debugWebSSH2('SOCKET DISCONNECTING: ' + reason) })
+      socket.on('disconnecting', function socketOnDisconnecting(reason) { 
+        console.log('SOCKET DISCONNECTING: ' + reason) 
+      })
       socket.on('disconnect', function socketOnDisconnect(reason) {
-        debugWebSSH2('SOCKET DISCONNECT: ' + reason)
         SSHerror('CLIENT SOCKET DISCONNECT', reason)
         conn.end()
       })
@@ -86,8 +74,9 @@ module.exports = function socket(socket) {
       })
     })
   })
-
-  conn.on('end', function connOnEnd(err) { SSHerror('CONN END BY HOST', err) })
+  conn.on('end', function connOnEnd(err) { 
+    SSHerror('CONN END BY HOST', err) 
+  })
   conn.on('close', function connOnClose(err) {
     console.log('CONN CLOSE')
   })
@@ -100,7 +89,6 @@ module.exports = function socket(socket) {
     SSHerror('timeout ERROR', err)
   })
   conn.on('keyboard-interactive', function connOnKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
-    debugWebSSH2('conn.on(\'keyboard-interactive\')')
     finish([socket.request.session.userpassword])
   })
   if (socket.request.session.username && socket.request.session.userpassword && socket.request.session.ssh) {
@@ -114,14 +102,12 @@ module.exports = function socket(socket) {
         algorithms: socket.request.session.ssh.algorithms,
         readyTimeout: socket.request.session.ssh.readyTimeout,
         keepaliveInterval: socket.request.session.ssh.keepaliveInterval,
-        keepaliveCountMax: socket.request.session.ssh.keepaliveCountMax,
-        debug: debug('ssh2')
+        keepaliveCountMax: socket.request.session.ssh.keepaliveCountMax
       })
     } catch (e) {
       socket.disconnect(true)
     }
   } else {
-    debugWebSSH2('Attempt to connect without session.username/password or session varialbles defined, potentially previously abandoned client session. disconnecting websocket client.\r\nHandshake information: \r\n  ' + JSON.stringify(socket.handshake))
     socket.emit('ssherror', 'miss username or userpassword or ssh-config')
     socket.disconnect(true)
   }
@@ -131,9 +117,6 @@ module.exports = function socket(socket) {
       console.log('WebSSH2 error' + err.stack || err)
     }
     socket.emit('ssherror', 'SSH ' + myFunc + err)
-
     socket.disconnect(true)
-
-    debugWebSSH2('SSHerror ' + myFunc + err)
   }
 }

@@ -195,10 +195,6 @@ app.post('/file-upload/:user/:path', function(req, res) {
 })
 
 app.use(function(req, res, next) {
-    console.log('sssss')
-    next()
-})
-app.use(function(req, res, next) {
     res.status(404).send("Sorry can't find that!")
 })
 

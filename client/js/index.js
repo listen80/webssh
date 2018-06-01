@@ -166,6 +166,10 @@ function start() {
 
     socket.on('connect', function() {
         socket.emit('geometry', term.cols, term.rows)
+    })
+
+    socket.on('sshok', function() {
+        console.log('sshok')
         login.style.display = 'none'
         control.style.display = 'block'
     })

@@ -33,6 +33,11 @@ var expressOptions = {
 // express
 app.use(compression({ level: 9 }))
 app.use(session)
+
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 if (config.accesslog) {
     app.use(logger('common'))
 }
@@ -47,11 +52,6 @@ app.get('/', function(req, res, next) {
     res.sendFile(path.join(publicPath, 'client.htm'))
 })
 
-
-var bodyParser = require('body-parser');
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/', function(req, res, next) {
 

@@ -26,6 +26,7 @@
     "url": "https://github.com/billchurch/WebSSH2/issues"
   },
   "dependencies": {
+    "body-parser": "^1.8.0",
     "compression": "^1.7.1",
     "express": "^4.16.1",
     "express-session": "^1.15.6",

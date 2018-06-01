@@ -114,7 +114,8 @@ module.exports = function socket(socket) {
 
   function SSHerror(myFunc, err) {
     if (err) {
-      console.log('WebSSH2 error' + err)
+      console.log('WebSSH2 error')
+      console.log(err)
     }
     socket.emit('ssherror', 'SSH ' + myFunc + err)
     socket.disconnect(true)

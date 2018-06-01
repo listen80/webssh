@@ -13,6 +13,7 @@ module.exports = function socket(socket) {
     return
   }
   var conn = new SSH()
+  // socket.on('')
   socket.on('geometry', function socketOnGeometry(cols, rows) {
     termCols = cols
     termRows = rows
@@ -24,7 +25,6 @@ module.exports = function socket(socket) {
   })
 
   conn.on('ready', function connOnReady() {
-    // console.log('WebSSH2 Login: user=' + socket.request.session.username + ' from=' + socket.handshake.address + ' host=' + socket.request.session.ssh.host + ' port=' + socket.request.session.ssh.port + ' sessionID=' + socket.request.sessionID + '/' + socket.id + ' mrhsession=' + socket.request.session.ssh.mrhsession + ' term=' + socket.request.session.ssh.term)
     conn.shell({
       term: socket.request.session.ssh.term,
       cols: termCols,
@@ -68,14 +68,14 @@ module.exports = function socket(socket) {
         debugWebSSH2('SOCKET DISCONNECT: ' + reason)
         SSHerror('CLIENT SOCKET DISCONNECT', reason)
         conn.end()
-        // socket.request.session.destroy()
       })
       socket.on('error', function socketOnError(err) {
         SSHerror('SOCKET ERROR', err)
         conn.end()
       })
-
-      stream.on('data', function streamOnData(data) { socket.emit('data', data.toString('utf-8')) })
+      stream.on('data', function streamOnData(data) { 
+        socket.emit('data', data.toString('utf-8')) 
+      })
       stream.on('close', function streamOnClose(code, signal) {
         err = { message: ((code || signal) ? (((code) ? 'CODE: ' + code : '') + ((code && signal) ? ' ' : '') + ((signal) ? 'SIGNAL: ' + signal : '')) : undefined) }
         SSHerror('STREAM CLOSE', err)
@@ -90,7 +90,6 @@ module.exports = function socket(socket) {
   conn.on('end', function connOnEnd(err) { SSHerror('CONN END BY HOST', err) })
   conn.on('close', function connOnClose(err) {
     console.log('CONN CLOSE')
-    // SSHerror('CONN CLOSE', err)
   })
   conn.on('error', function connOnError(err) {
     console.log('CONN ERROR')
@@ -105,7 +104,6 @@ module.exports = function socket(socket) {
     finish([socket.request.session.userpassword])
   })
   if (socket.request.session.username && socket.request.session.userpassword && socket.request.session.ssh) {
-    // console.log('hostkeys: ' + hostkeys[0].[0])
     try {
       conn.connect({
         host: socket.request.session.ssh.host,
@@ -122,27 +120,18 @@ module.exports = function socket(socket) {
     } catch (e) {
       socket.disconnect(true)
     }
-
   } else {
     debugWebSSH2('Attempt to connect without session.username/password or session varialbles defined, potentially previously abandoned client session. disconnecting websocket client.\r\nHandshake information: \r\n  ' + JSON.stringify(socket.handshake))
-
     socket.emit('ssherror', 'miss username or userpassword or ssh-config')
-    // socket.request.session.destroy()
     socket.disconnect(true)
   }
 
-  /**
-   * Error handling for various events. Outputs error to client, logs to
-   * server, destroys session and disconnects socket.
-   * @param {string} myFunc Function calling this function
-   * @param {object} err    error object or error message
-   */
   function SSHerror(myFunc, err) {
     if (err) {
       console.log('WebSSH2 error' + err.stack || err)
     }
     socket.emit('ssherror', 'SSH ' + myFunc + err)
-    // socket.request.session.destroy()
+
     socket.disconnect(true)
 
     debugWebSSH2('SSHerror ' + myFunc + err)

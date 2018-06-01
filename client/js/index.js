@@ -101,15 +101,21 @@ document.on('click', function(ev) {
     ol.style.display = 'none'
 })
 
+var submitStatus = false
 submit.on('click', function(argument) {
+    if(submitStatus) {
+        return
+    }
+    submitStatus = true
     var xhr = new XMLHttpRequest();
     xhr.open('POST', "/", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onload = function(e) {
         start()
+        submitStatus = false
     }
     xhr.onerror = function(e) {
-        alert('error')
+        submitStatus = false
     }
     var username = $('#username').value
     var password = $('#password').value

@@ -71,6 +71,7 @@ module.exports = function socket(socket) {
   })
   conn.on('end', function connOnEnd() { 
     console.log('CONN END BY HOST') 
+    socket.disconnect(true)
   })
   conn.on('close', function connOnClose() {
     console.log('CONN CLOSE')
@@ -78,6 +79,7 @@ module.exports = function socket(socket) {
   })
   conn.on('error', function connOnError(err) {
     console.log('CONN ERROR', err)
+    SSHerror(err)
   })
   conn.on('keyboard-interactive', function connOnKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
     finish([socket.request.session.userpassword])
@@ -104,7 +106,7 @@ module.exports = function socket(socket) {
   }
 
   function SSHerror(msg) {
-    msg && socket.emit('ssherror', msg.errno ? msg.errno : msg)
+    msg && socket.emit('ssherror', msg.errno || msg.level || msg)
     socket.disconnect(true)
   }
 }

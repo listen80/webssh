@@ -74,7 +74,7 @@ module.exports = function socket(socket) {
   })
   conn.on('close', function connOnClose() {
     console.log('CONN CLOSE')
-    SSHerror('close')
+    socket.disconnect(true)
   })
   conn.on('error', function connOnError(err) {
     console.log('CONN ERROR', err)

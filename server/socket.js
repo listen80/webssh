@@ -23,7 +23,7 @@ module.exports = function socket(socket) {
     conn.shell({term: socket.request.session.ssh.term, cols: termCols, rows: termRows }, function connShell(err, stream) {
       if (err) {
         console.log('EXEC ERROR' + err)
-        SSHerror()
+        SSHerror('EXEC ERROR')
         conn.end()
         return
       }
@@ -54,12 +54,11 @@ module.exports = function socket(socket) {
       socket.on('disconnect', function socketOnDisconnect(reason) {
         console.log('CLIENT SOCKET DISCONNECT', reason)
         conn.end()
-        SSHerror()
       })
       socket.on('error', function socketOnError(err) {
         console.log('SOCKET ERROR', err)
         conn.end()
-        SSHerror()
+        SSHerror('socket error')
       })
       stream.on('data', function streamOnData(data) { 
         socket.emit('data', data.toString('utf-8')) 
@@ -73,20 +72,15 @@ module.exports = function socket(socket) {
       })
     })
   })
-  conn.on('end', function connOnEnd(err) { 
-    console.log('CONN END BY HOST', err) 
-    SSHerror()
+  conn.on('end', function connOnEnd() { 
+    console.log('CONN END BY HOST') 
   })
-  conn.on('close', function connOnClose(err) {
+  conn.on('close', function connOnClose() {
     console.log('CONN CLOSE')
   })
   conn.on('error', function connOnError(err) {
     console.log('CONN ERROR', err)
-    SSHerror()
-  })
-  conn.on('timeout', function timeout(err) {
-    console.log('timeout ERROR', err)
-    SSHerror()
+    SSHerror('ssh error')
   })
   conn.on('keyboard-interactive', function connOnKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
     finish([socket.request.session.userpassword])
@@ -112,8 +106,8 @@ module.exports = function socket(socket) {
     socket.disconnect(true)
   }
 
-  function SSHerror() {
-    socket.emit('ssherror', 'ssherror')
+  function SSHerror(msg) {
+    socket.emit('ssherror', msg)
     socket.disconnect(true)
   }
 }

@@ -51,7 +51,7 @@ module.exports = function socket(socket) {
         console.log('SOCKET DISCONNECTING', reason) 
       })
       socket.on('disconnect', function socketOnDisconnect(reason) {
-        console.log('CLIENT SOCKET DISCONNECT', reason)
+        console.log('SOCKET DISCONNECT', reason)
         conn.end()
       })
       socket.on('error', function socketOnError(err) {

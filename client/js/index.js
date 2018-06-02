@@ -13,10 +13,7 @@ window.Node.prototype.on = Node.prototype.addEventListener
 var isUploading = false
 
 function postfile(file) {
-    if (isUploading) {
-        return
-    }
-    if (!file || !file.size) {
+    if (isUploading || !file || !file.size) {
         return
     }
     isUploading = true
@@ -44,17 +41,17 @@ function postfile(file) {
     term.focus()
 }
 
-document.on('drop', function(ev) {
-    ev.preventDefault();
-    postfile(ev.dataTransfer.files[0])
+document.on('drop', function(e) {
+    e.preventDefault();
+    postfile(e.dataTransfer.files[0])
     term.focus()
 })
 
-document.on('dragover', function(ev) {
-    ev.preventDefault();
+document.on('dragover', function(e) {
+    e.preventDefault();
 })
 
-$('#upload').on('click', function(argument) {
+$('#upload').on('click', function() {
     var input = document.createElement('input')
     input.type = 'file'
     input.onchange = function() {

@@ -17,7 +17,6 @@ function postfile(file) {
         return
     }
     if (!file || !file.size) {
-        console.log(file)
         return
     }
     isUploading = true
@@ -146,9 +145,10 @@ function start() {
         socket.emit('disconnect')
     }
 
-    function error() {
+    function error(data) {
         submitStatus = false
         login.style.display = 'block'
+        data && (msg.innerHTML = data)
         while (terminal.firstChild) {
             terminal.removeChild(terminal.firstChild)
         }
@@ -178,7 +178,7 @@ function start() {
     })
 
     socket.on('sshok', function() {
-        console.log('sshok')
+        msg.innerHTML = ''
         login.style.display = 'none'
         control.style.display = 'block'
     })
@@ -188,18 +188,15 @@ function start() {
     })
 
     socket.on('ssherror', function(data) {
-        console.error(data)
-        error()
+        error(data)
     })
 
     socket.on('disconnect', function(err) {
-        console.log('disconnect', err)
-        socket.io.reconnection(false)
         error()
+        socket.io.reconnection(false)
     })
 
     socket.on('error', function(err) {
-        console.log(err)
-        error()
+        error(err)
     })
 }

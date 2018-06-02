@@ -19,7 +19,6 @@ module.exports = function socket(socket) {
     socket.emit('data', data.toString('utf-8'))
   })
   conn.on('ready', function connOnReady() {
-
     conn.shell({term: socket.request.session.ssh.term, cols: termCols, rows: termRows }, function connShell(err, stream) {
       if (err) {
         console.log('EXEC ERROR' + err)
@@ -57,8 +56,6 @@ module.exports = function socket(socket) {
       })
       socket.on('error', function socketOnError(err) {
         console.log('SOCKET ERROR', err)
-        conn.end()
-        SSHerror('socket error')
       })
       stream.on('data', function streamOnData(data) { 
         socket.emit('data', data.toString('utf-8')) 
@@ -77,10 +74,10 @@ module.exports = function socket(socket) {
   })
   conn.on('close', function connOnClose() {
     console.log('CONN CLOSE')
+    SSHerror(err)
   })
   conn.on('error', function connOnError(err) {
     console.log('CONN ERROR', err)
-    SSHerror('ssh error')
   })
   conn.on('keyboard-interactive', function connOnKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
     finish([socket.request.session.userpassword])
@@ -107,7 +104,7 @@ module.exports = function socket(socket) {
   }
 
   function SSHerror(msg) {
-    socket.emit('ssherror', msg)
+    msg && socket.emit('ssherror', msg.errno ? msg.errno : msg)
     socket.disconnect(true)
   }
 }

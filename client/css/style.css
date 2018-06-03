@@ -155,4 +155,5 @@ input {
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-height: 22px;
 }

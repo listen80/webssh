@@ -172,10 +172,10 @@ function start() {
 
     socket.on('connect', function() {
         socket.emit('geometry', term.cols, term.rows)
-        socket.emit('resize', { cols: term.cols, rows: term.rows })
     })
 
     socket.on('sshok', function() {
+        resizeScreen()
         msg.innerHTML = ''
         login.style.display = 'none'
         control.style.display = 'block'

@@ -172,6 +172,7 @@ function start() {
 
     socket.on('connect', function() {
         socket.emit('geometry', term.cols, term.rows)
+        socket.emit('resize', { cols: term.cols, rows: term.rows })
     })
 
     socket.on('sshok', function() {

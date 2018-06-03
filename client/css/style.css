@@ -150,7 +150,9 @@ input {
 
 #msg {
   color: #ff4a4a;
-  height: 22px;
   font-size: 12px;
   line-height: 22px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

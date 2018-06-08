@@ -1,30 +1,12 @@
 {
-  "name": "webssh2",
-  "version": "0.2.3",
+  "name": "webssh",
+  "version": "0.0.1",
   "ignore": [
     ".gitignore"
   ],
   "description": "A Websocket to SSH2 gateway using term.js, socket.io, ssh2, and express",
-  "homepage": "https://github.com/billchurch/WebSSH2",
   "keywords": "ssh webssh terminal webterminal",
   "license": "SEE LICENSE IN FILE - LICENSE",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/billchurch/WebSSH2.git"
-  },
-  "contributors": [
-    {
-      "name": "Bill Church",
-      "email": "wmchurch@gmail.com"
-    }
-  ],
-  "engines": {
-    "node": "6"
-  },
-  "bugs": {
-    "url": "https://github.com/billchurch/WebSSH2/issues"
-  },
   "dependencies": {
     "body-parser": "^1.8.0",
     "compression": "^1.7.1",
@@ -48,19 +30,11 @@
     "clean-webpack-plugin": "^0.1.18",
     "css-loader": "^0.28.9",
     "extract-text-webpack-plugin": "^1.0.0",
-    "file-loader": "^1.1.6",
+    "file-loader": "^0.8.0",
     "nodemon": "^1.11.0",
     "style-loader": "^0.21.0",
-    "url-loader": "^1.0.1",
+    "url-loader": "^0.6.1",
     "webpack": "^1.12.15",
     "webpack-merge": "^1.1.2"
-  },
-  "standard": {
-    "ignore": [
-      "bigip/*",
-      "screenshots/*",
-      "bin/*",
-      "build/*"
-    ]
   }
 }

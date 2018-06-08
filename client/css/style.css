@@ -1,10 +1,8 @@
 html,
 body {
-  font-size: 1em;
+  font-size: 16px;
   height: 100%;
   margin: 0;
-  min-width: 800px;
-  min-height: 600px;
 }
 
 #terminal {
@@ -156,4 +154,10 @@ input {
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: 22px;
+}
+
+@media screen and (max-width: 360px) {
+  html, body {
+    font-size: 12px;
+  }
 }

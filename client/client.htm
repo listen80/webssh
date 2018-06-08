@@ -2,35 +2,36 @@
 <html>
 
 <head>
-    <title>WebSSH</title>
-    <link rel="stylesheet" href="//cdn.bootcss.com/xterm/2.9.2/xterm.min.css">
+  <title>WebSSH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="//cdn.bootcss.com/xterm/2.9.2/xterm.min.css">
 </head>
 
 <body>
-    <div id="terminal"></div>
-    <div id="control">
-        <span id="upload">Upload</span>
-        <span id="download">Download</span>
-        <ol id="ol"></ol>
+  <div id="terminal"></div>
+  <div id="control">
+    <span id="upload">Upload</span>
+    <span id="download">Download</span>
+    <ol id="ol"></ol>
+  </div>
+  <div id="login">
+    <div class="auth-form-wrap">
+      <div class="auth-form-header">
+        <h1>Login in WebSSH</h1>
+        <div id="msg"></div>
+      </div>
+      <div class="auth-form-body">
+        <label for="login_field">Username</label>
+        <input type="text" id="username" class="margin-18" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="margin-18" tabindex="2">
+        <input type="button" value="Login" tabindex="3" id="submit">
+      </div>
     </div>
-    <div id="login">
-        <div class="auth-form-wrap">
-            <div class="auth-form-header">
-                <h1>Login in WebSSH</h1>
-                <div id="msg"></div>
-            </div>
-            <div class="auth-form-body">
-                <label for="login_field">Username</label>
-                <input type="text" id="username" class="margin-18" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus">
-                <label for="password">Password</label>
-                <input type="password" id="password" class="margin-18" tabindex="2">
-                <input type="button" value="Login" tabindex="3" id="submit">
-            </div>
-        </div>
-    </div>
-    <script src="//cdn.bootcss.com/socket.io/2.1.0/socket.io.js"></script>
-    <script src="//cdn.bootcss.com/xterm/2.9.2/xterm.min.js"></script>
-    <script src="//cdn.bootcss.com/xterm/2.9.2/addons/fit/fit.min.js"></script>
+  </div>
+  <script src="//cdn.bootcss.com/socket.io/2.1.0/socket.io.js"></script>
+  <script src="//cdn.bootcss.com/xterm/2.9.2/xterm.min.js"></script>
+  <script src="//cdn.bootcss.com/xterm/2.9.2/addons/fit/fit.min.js"></script>
 </body>
 
 </html>

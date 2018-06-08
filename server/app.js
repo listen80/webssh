@@ -1,5 +1,6 @@
 // app.js
 var path = require('path')
+var fs = require('fs');
 var configPath = path.resolve('config.json')
 var publicPath = path.resolve('public')
 var config = require('read-config')(configPath)
@@ -77,8 +78,6 @@ app.post('/', function(req, res, next) {
     }
     res.send('ok')
 })
-
-var fs = require('fs');
 
 app.get('/file-download/:user/:path/:fileName', function(req, res, next) {
 
@@ -220,7 +219,7 @@ io.on('connection', socket)
 
 server.listen({ host: config.listen.ip, port: config.listen.port })
 
-console.log('WebSSH2 service listening on ' + config.listen.ip + ':' + config.listen.port)
+console.log('WebSSH service listening on ' + config.listen.ip + ':' + config.listen.port)
 
 server.on('error', function (err) {
   if (err.code === 'EADDRINUSE') {

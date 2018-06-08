@@ -156,7 +156,7 @@ input {
   min-height: 22px;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 414px) {
   html, body {
     font-size: 12px;
   }
